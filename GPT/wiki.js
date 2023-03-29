@@ -13,7 +13,11 @@ async function getWikiPage(pageTitle) {
         });
 
     let sections = pageData.remaining.sections;
-    sections.unshift(pageData.lead.sections[0]);
+    sections.unshift({
+        id: 0,
+        line: "Overview",
+        text: pageData.lead.sections[0].text
+    });
 
     return {
         title: pageData.lead.normalizedtitle,
