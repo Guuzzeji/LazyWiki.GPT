@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const { Readability, isProbablyReaderable } = require('@mozilla/readability');
 const { JSDOM } = require('jsdom');
 
-async function getWikiPage(pageTitle) {
+module.exports.getWikiPage = async function getWikiPage(pageTitle) {
     let urlTitle = encodeURIComponent(pageTitle);
 
     let pageData = await fetch(`https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${urlTitle}`)
@@ -23,9 +23,9 @@ async function getWikiPage(pageTitle) {
         title: pageData.lead.normalizedtitle,
         sections
     };
-}
+};
 
-function htmlToText(html) {
+module.exports.htmlToText = function htmlToText(html) {
     let fullText = "";
 
     let par = html.split("\n");
@@ -41,4 +41,4 @@ function htmlToText(html) {
     }
 
     return fullText.trim();
-}
+};
