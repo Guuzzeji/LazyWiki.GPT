@@ -12,11 +12,9 @@ module.exports.chunkTokens = function chunkTokens({ modelType, text, chunkSize, 
 
     let result = [];
 
-    let index = 0;
-    for (let i = 0; i < tokens.length / (chunkSize + overlap); i++) {
-        let decodeText = new TextDecoder().decode(model.decode(tokens.slice(index - overlap, index + chunkSize)));
+    for (let i = 0; i < tokens.length / (chunkSize + overlap); i += chunkSize) {
+        let decodeText = new TextDecoder().decode(model.decode(tokens.slice(i - overlap, i + chunkSize)));
         result.push(decodeText);
-        index += chunkSize;
     }
 
     model.free();
