@@ -22,3 +22,14 @@ module.exports.chunkTokens = function chunkTokens({ modelType, text, chunkSize, 
     model.free();
     return result;
 };
+
+module.exports.checkTokenSize = function chunkTokens({ modelType, text, tokenLength }) {
+    const model = encoding_for_model(modelType);
+    let tokens = model.encode(text);
+
+    if (tokens.length <= tokenLength) {
+        return false;
+    }
+
+    return true;
+};
