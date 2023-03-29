@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { Readability } = require('@mozilla/readability');
+const { Readability, isProbablyReaderable } = require('@mozilla/readability');
 const { JSDOM } = require('jsdom');
 
 async function getWikiPage(pageTitle) {
@@ -31,22 +31,14 @@ function htmlToText(html) {
     let par = html.split("\n");
 
     for (let i = 0; i < par.length; i++) {
-        let dom = new JSDOM(par[i]);
-        let text = new Readability(dom.window.document).parse();
+        let dom = new JSDOM(par[i]).window.document;
 
         // ! Note to self: Readability will not return a empty string, instead return null
-        if (text != null) {
+        if (isProbablyReaderable(dom)) {
+            let text = new Readability(dom).parse();
             fullText += "\n" + text.textContent;
         }
     }
 
     return fullText.trim();
 }
-
-async function main() {
-    let page = await getWikiPage("windows 10");
-
-    console.log(htmlToText(page.sections[0].text));
-}
-
-main();
