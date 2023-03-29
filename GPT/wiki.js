@@ -24,3 +24,29 @@ async function getWikiPage(pageTitle) {
         sections
     };
 }
+
+function htmlToText(html) {
+    let fullText = "";
+
+    let par = html.split("\n");
+
+    for (let i = 0; i < par.length; i++) {
+        let dom = new JSDOM(par[i]);
+        let text = new Readability(dom.window.document).parse();
+
+        // ! Note to self: Readability will not return a empty string, instead return null
+        if (text != null) {
+            fullText += "\n" + text.textContent;
+        }
+    }
+
+    return fullText.trim();
+}
+
+async function main() {
+    let page = await getWikiPage("windows 10");
+
+    console.log(htmlToText(page.sections[0].text));
+}
+
+main();
