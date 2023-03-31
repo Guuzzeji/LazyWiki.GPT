@@ -6,9 +6,9 @@ import { router as api } from './routes/api.js';
 
 dotenv.config();
 const app = express();
-const port = process.env.PORT || 300;
+const port = process.env.PORT || 3000;
 
-app.use(morgan('combined'));
+app.use(morgan('tiny'));
 app.use("/API", api);
 
 
