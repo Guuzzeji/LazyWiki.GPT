@@ -1,4 +1,4 @@
-const { encoding_for_model } = require("@dqbd/tiktoken");
+import { encoding_for_model } from "@dqbd/tiktoken";
 
 // base on https://blog.devgenius.io/how-to-get-around-openai-gpt-3-token-limits-b11583691b32
 

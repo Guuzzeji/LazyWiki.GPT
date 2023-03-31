@@ -1,8 +1,7 @@
-const express = require('express');
-const morgan = require('morgan');
+import express from 'express';
+import morgan from 'morgan';
 
-const api = require('./routes/api');
-
+import { router as api } from './routes/api.js';
 
 const app = express();
 const port = 3000;

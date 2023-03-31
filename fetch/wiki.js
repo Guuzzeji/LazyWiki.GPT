@@ -1,6 +1,6 @@
-const fetch = require('node-fetch');
-const { Readability, isProbablyReaderable } = require('@mozilla/readability');
-const { JSDOM } = require('jsdom');
+import fetch from 'node-fetch';
+import { Readability, isProbablyReaderable } from '@mozilla/readability';
+import { JSDOM } from 'jsdom';
 
 module.exports.getWikiPage = async function getWikiPage(pageTitle) {
     let urlTitle = encodeURIComponent(pageTitle);

@@ -1,5 +1,5 @@
-const fetch = require('node-fetch');
-const { JSDOM } = require('jsdom');
+import fetch from 'node-fetch';
+import { JSDOM } from 'jsdom';
 
 // base on https://stackoverflow.com/questions/37012469/duckduckgo-api-getting-search-results
 module.exports.search = async function (str) {
