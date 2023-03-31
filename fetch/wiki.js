@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { Readability, isProbablyReaderable } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
 
-module.exports.getWikiPage = async function getWikiPage(pageTitle) {
+async function getWikiPage(pageTitle) {
     let urlTitle = encodeURIComponent(pageTitle);
 
     let pageData = await fetch(`https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${urlTitle}`)
@@ -25,7 +25,7 @@ module.exports.getWikiPage = async function getWikiPage(pageTitle) {
     };
 };
 
-module.exports.htmlToText = function htmlToText(html) {
+function htmlToText(html) {
     let fullText = "";
 
     let par = html.split("\n");
@@ -42,3 +42,5 @@ module.exports.htmlToText = function htmlToText(html) {
 
     return fullText.trim();
 };
+
+export { getWikiPage, htmlToText };

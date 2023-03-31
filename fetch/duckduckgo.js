@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { JSDOM } from 'jsdom';
 
 // base on https://stackoverflow.com/questions/37012469/duckduckgo-api-getting-search-results
-module.exports.search = async function (str) {
+export default async function searchWiki(str) {
     let encodeStr = encodeURIComponent(str.trim());
 
     let rawHtml = await fetch(`https://html.duckduckgo.com/html/?q=site:en.wikipedia.org%20${encodeStr}`).
