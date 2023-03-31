@@ -1,10 +1,12 @@
+import * as dotenv from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
 
 import { router as api } from './routes/api.js';
 
+dotenv.config();
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 300;
 
 app.use(morgan('combined'));
 app.use("/API", api);
