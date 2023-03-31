@@ -27,7 +27,7 @@ export default async function searchWiki(str) {
         .querySelector("#links")
         .querySelectorAll(".result.results_links.results_links_deep.web-result");
 
-    for (let i = 0; i < ((totalPages.length > 3) ? 3 : totalPages.length); i++) {
+    for (let i = 0; i < ((totalPages.length > 5) ? 5 : totalPages.length); i++) {
         jsonPages.push({
             title: totalPages[i].querySelector(".result__title").textContent.trim(),
             link: `https://${totalPages[i].querySelector(".result__url").textContent.trim()}`,
