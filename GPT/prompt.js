@@ -17,12 +17,20 @@ const promptTempQS = new PromptTemplate({
 
 
 export default async function createPrompt(question) {
-    let links = await searchWiki("what is vslam");
+    let links = await searchWiki(question);
 
     const input = await promptTempQS.format({
-        question: "what is vslam",
+        question: question,
         "websites-json-infomation": JSON.stringify(links)
     });
 
     return JSON.stringify(input);
 }
+
+
+// async function main() {
+//     let prompt = await createPrompt("Who owns apple");
+//     console.log(prompt);
+// }
+
+// main();
