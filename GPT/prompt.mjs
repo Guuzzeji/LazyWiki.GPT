@@ -1,16 +1,15 @@
 import { PromptTemplate, SystemMessagePromptTemplate } from "langchain/prompts";
 import { StructuredOutputParser } from "langchain/output_parsers";
 
-const WikipageStrucutre = StructuredOutputParser.fromNamesAndDescriptions({
-    answer: "sources used to answer the user's question, should be a Wikipedia website url.",
+const answerUserStruct = StructuredOutputParser.fromNamesAndDescriptions({
+    answers: "The answer to the user's question with citations of the source used to answer the question. Example of a citations: some text [1](the website url).",
 });
 
-const answerQuestion = StructuredOutputParser.fromNamesAndDescriptions({
-    answer: "answer to the user's question with annotation for Wikipedia websites used. Example: some text {1}",
-    source: [
-        "sources used to answer the user's question, should be a Wikipedia website url.",
-    ]
+const identifyWebsitesStruct = StructuredOutputParser.fromNamesAndDescriptions({
+    top: "The website that will most likely answer the user's question",
+    sources: ["Other websites that could also answer the user's question'"],
 });
+
 
 const promptWikiPages = new PromptTemplate({
     template:
