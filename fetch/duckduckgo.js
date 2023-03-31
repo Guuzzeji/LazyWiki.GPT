@@ -1,11 +1,12 @@
 import fetch from 'node-fetch';
 import { JSDOM } from 'jsdom';
+import removeStopWords from './stop-word.js';
 
 // base on https://stackoverflow.com/questions/37012469/duckduckgo-api-getting-search-results
 export default async function searchWiki(str) {
-    let encodeStr = encodeURIComponent(str.trim());
+    let encodeStr = encodeURIComponent(removeStopWords(str));
 
-    let rawHtml = await fetch(`https://html.duckduckgo.com/html/?q=site:en.wikipedia.org%20${encodeStr}`).
+    let rawHtml = await fetch(`https://html.duckduckgo.com/html/?q=site:en.wikipedia.org%20"${encodeStr}"`).
         then((response) => {
             return response.text();
         }).then((data) => {
@@ -20,7 +21,7 @@ export default async function searchWiki(str) {
         .querySelector("#links")
         .querySelectorAll(".result.results_links.results_links_deep.web-result");
 
-    for (let i = 0; i < totalPages.length; i++) {
+    for (let i = 0; i < totalPages.length / 2; i++) {
         jsonPages.push({
             title: totalPages[i].querySelector(".result__title").textContent.trim(),
             link: `https://${totalPages[i].querySelector(".result__url").textContent.trim()}`,
