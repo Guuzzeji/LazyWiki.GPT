@@ -1,8 +1,6 @@
 import { PromptTemplate, SystemMessagePromptTemplate } from "langchain/prompts";
 import { StructuredOutputParser } from "langchain/output_parsers";
 
-import { removeStopWords } from "./stopWord.js";
-
 const WikipageStrucutre = StructuredOutputParser.fromNamesAndDescriptions({
     answer: "sources used to answer the user's question, should be a Wikipedia website url.",
 });
