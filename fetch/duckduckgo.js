@@ -8,7 +8,6 @@ import removeStopWords from './stop-word.js';
 export default async function searchWiki(str) {
     let encodeStr = encodeURIComponent(removeStopWords(str));
 
-
     let rawHtml = await fetch(`https://html.duckduckgo.com/html/?q=site:en.wikipedia.org%20"${encodeStr}"`, {
         method: 'GET',
         headers: {
