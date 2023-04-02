@@ -1,8 +1,7 @@
 import { encoding_for_model } from "@dqbd/tiktoken";
 
 // base on https://blog.devgenius.io/how-to-get-around-openai-gpt-3-token-limits-b11583691b32
-
-module.exports.chunkTokens = function chunkTokens({ modelType, text, chunkSize, overlap }) {
+function chunkText({ modelType, text, chunkSize, overlap }) {
     const model = encoding_for_model(modelType);
     let tokens = model.encode(text);
 
@@ -21,7 +20,7 @@ module.exports.chunkTokens = function chunkTokens({ modelType, text, chunkSize, 
     return result;
 };
 
-module.exports.checkTokenSize = function chunkTokens({ modelType, text, tokenLength }) {
+function checkTextSize({ modelType, text, tokenLength }) {
     const model = encoding_for_model(modelType);
     let tokens = model.encode(text);
 
@@ -33,3 +32,5 @@ module.exports.checkTokenSize = function chunkTokens({ modelType, text, tokenLen
     model.free();
     return true;
 };
+
+export { chunkText, checkTextSize };
