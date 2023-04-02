@@ -25,6 +25,7 @@ export default async function searchWiki(str) {
     let pageResultList = parseHtml
         .querySelectorAll(".searchResultImage-text");
 
+    // Loops and gets the top 5 results from wiki search
     for (let i = 0; i < ((pageResultList.length > 5) ? 5 : pageResultList.length); i++) {
         console.log();
         searchResultsJson.push({
