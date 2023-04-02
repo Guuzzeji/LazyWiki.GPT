@@ -26,8 +26,10 @@ module.exports.checkTokenSize = function chunkTokens({ modelType, text, tokenLen
     let tokens = model.encode(text);
 
     if (tokens.length <= tokenLength) {
+        model.free();
         return false;
     }
 
+    model.free();
     return true;
 };
