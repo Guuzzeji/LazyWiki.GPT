@@ -19,6 +19,10 @@ async function getWikiPage(pageTitle) {
         text: pageData.lead.sections[0].text
     });
 
+    for (let i = 0; i < sections.length; i++) {
+        sections[i].text = htmlToText(sections[i].text);
+    }
+
     return {
         title: pageData.lead.normalizedtitle,
         sections
@@ -32,10 +36,10 @@ function htmlToText(html) {
 
     for (let i = 0; i < par.length; i++) {
         let dom = new JSDOM(par[i]).window.document;
+        let text = new Readability(dom).parse();
 
         // ! Note to self: Readability will not return a empty string, instead return null
-        if (isProbablyReaderable(dom)) {
-            let text = new Readability(dom).parse();
+        if (text != null) {
             fullText += "\n" + text.textContent;
         }
     }
@@ -43,4 +47,4 @@ function htmlToText(html) {
     return fullText.trim();
 };
 
-export { getWikiPage, htmlToText };
+export { getWikiPage };
