@@ -2,6 +2,8 @@ import fetch from 'node-fetch';
 import { Readability, isProbablyReaderable } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
 
+import { encoding_for_model } from "@dqbd/tiktoken";
+
 async function getWikiPage(pageTitle) {
     let urlTitle = encodeURIComponent(pageTitle);
 
@@ -36,10 +38,10 @@ function htmlToText(html) {
 
     for (let i = 0; i < par.length; i++) {
         let dom = new JSDOM(par[i]).window.document;
-        let text = new Readability(dom).parse();
 
         // ! Note to self: Readability will not return a empty string, instead return null
-        if (text != null) {
+        if (isProbablyReaderable(dom)) {
+            let text = new Readability(dom).parse();
             fullText += "\n" + text.textContent;
         }
     }
