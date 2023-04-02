@@ -2,8 +2,8 @@ import fetch from 'node-fetch';
 import { Readability, isProbablyReaderable } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
 
-import { encoding_for_model } from "@dqbd/tiktoken";
-
+//! Note: would be more useful if we are using a embeding model
+// https://platform.openai.com/docs/guides/embeddings/use-cases
 async function getWikiPage(pageTitle) {
     let urlTitle = encodeURIComponent(pageTitle);
 
