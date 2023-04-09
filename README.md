@@ -3,6 +3,10 @@ GPT chatbot that powers it answers using wikipedia
 
 Inspired by https://github.com/shbhrsaha/wikipedia-gpt3-bot
 
+## Todo
+- [ ] Use cohere.ai to summary sections from wiki pages and then have them be resend back to gpt to futher answer people questions
+- [ ] Create a UI that is similar to wikipedia
+
 ### Note
 
 Don't use duckduckgo, use wiki search instead
