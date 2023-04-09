@@ -11,9 +11,24 @@ router.get('/question=:qs', requestLimter, async (req, res) => {
     let prompt = await createPrompt(req.params.qs);
     let openAIRes = await openaiApi(prompt);
 
-    console.log(openAIRes);
-    // let resJson = JSON.parse(openAIRes.data.choices[0].text.replace("```json", "").replace("```", ""));
-    res.send(openAIRes.data.choices[0].text);
+    console.log(openAIRes.data);
+
+    // Try to parse json from gpt-3 (old model)
+    // try {
+    //     let resJson = JSON.parse(openAIRes.data.choices[0].text.replace("```json", "").replace("```", ""));
+    //     res.send(resJson);
+    // } catch {
+    //     res.send(openAIRes.data.choices[0].text);
+    // }
+
+    // Try to parse json from gpt
+    try {
+        let resJson = JSON.parse(openAIRes.data.choices[0].message.content.replace("```json", "").replace("```", ""));
+        res.send(resJson);
+    } catch {
+        res.send(openAIRes.data.choices[0].message.content);
+    }
+
 });
 
 export { router };
