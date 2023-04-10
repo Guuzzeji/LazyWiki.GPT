@@ -3,6 +3,7 @@ import { StructuredOutputParser } from "langchain/output_parsers";
 
 import searchWiki from "../fetch/wiki-search.js";
 
+// Answer general user question
 const answerUserStruct = StructuredOutputParser.fromNamesAndDescriptions({
     answers: `Provide answer with source citation in this format: some text[^1](website url). Answer limit is 500 words. Write "I don't know" if unable to answer. Avoid using double quotes in answer.`,
     best: "Suggest the most probable website URL from the provided list to answer the user's question. Leave blank if unable to answer.",
@@ -15,8 +16,9 @@ const promptTempQS = new PromptTemplate({
     partialVariables: { format_instructions: answerUserStruct.getFormatInstructions() },
 });
 
+// Search Wiki page for good sections that will answer the user's question'
 const searchStruct = StructuredOutputParser.fromNamesAndDescriptions({
-    answers: `Your answer should be from the list of ariticle sections titles`,
+    answers: [`Your answer should be from the list of ariticle sections titles. It should be a list of ariticle sections that will answer the user's question. Example: "History", "Corporate culture"`],
 });
 
 const promptSearchWikiPage = new PromptTemplate({
