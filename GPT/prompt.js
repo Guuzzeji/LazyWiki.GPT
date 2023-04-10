@@ -27,6 +27,17 @@ const promptSearchWikiPage = new PromptTemplate({
     partialVariables: { format_instructions: searchStruct.getFormatInstructions() },
 });
 
+// Answer user question with more context
+const answerQSMoreContextStruct = StructuredOutputParser.fromNamesAndDescriptions({
+    answers: [`Your answer to the user question. This should be at most 750 words`],
+});
+
+const promptUserQSMoreContext = new PromptTemplate({
+    template: `AI GPT best on the context given to you and your own knowledge, answer the user questions. \n User question: {question} \n Context: {context} \n {format_instructions}`,
+    inputVariables: ["question", "context"],
+    partialVariables: { format_instructions: answerQSMoreContextStruct.getFormatInstructions() },
+});
+
 
 
 // TODO: Write prompt that will get GPT to return a section from a wikipedia page that will contains more infomation on the user's questions.
