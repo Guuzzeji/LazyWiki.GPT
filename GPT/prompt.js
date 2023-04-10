@@ -16,13 +16,11 @@ const promptTempQS = new PromptTemplate({
 });
 
 const searchStruct = StructuredOutputParser.fromNamesAndDescriptions({
-    answers: `Provide answer with source citation in this format: some text[^1](website url). Answer limit is 500 words. Write "I don't know" if unable to answer. Avoid using double quotes in answer.`,
-    best: "Suggest the most probable website URL from the provided list to answer the user's question. Leave blank if unable to answer.",
-    sources: ["Provide a list of website URLs from the given list that were used to answer the user's question in the order of citations. If you could not answer the question, leave this blank."],
+    answers: `Your answer should be from the list of ariticle sections titles`,
 });
 
 const promptSearchWikiPage = new PromptTemplate({
-    template: `AI GPT select the best section from a wikipedia ariticle that will answer the user questions. You can only select from the list of wikipedia articles sections given to you. \n User question: {question} \n Wikipedia ariticle Name: {article_name} \n List of ariticle sections: {sections} \n {format_instructions}`,
+    template: `AI GPT select the best section from a wikipedia ariticle that will answer the user questions. You can only select from the list of wikipedia articles section titles given to you. \n User question: {question} \n Wikipedia ariticle Name: {article_name} \n List of ariticle sections titles: {sections} \n {format_instructions}`,
     inputVariables: ["question", "article_name", "sections"],
     partialVariables: { format_instructions: searchStruct.getFormatInstructions() },
 });
