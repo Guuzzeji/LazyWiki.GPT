@@ -10,6 +10,15 @@ Inspired by https://github.com/shbhrsaha/wikipedia-gpt3-bot
 
 ### Note
 
+UI Design a mix of wikipedia ui, openai, and komo.ai
+- https://fonts.google.com/specimen/Playfair+Display?category=Serif,Sans+Serif,Monospace
+- https://www.npmjs.com/package/react-markdown
+- https://www.freecodecamp.org/news/animate-react-apps/
+- https://picocss.com/
+- https://dribbble.com/tags/app%20inspiration
+- https://fonts.google.com/specimen/Inter?category=Serif,Sans+Serif,Monospace
+- Power this using react.js
+
 Don't use duckduckgo, use wiki search instead
 - https://www.lifewire.com/wikipedia-search-4685975
 - https://en.wikipedia.org/w/index.php?search=cherry&title=Special:Search&profile=advanced&fulltext=1&ns0=1
