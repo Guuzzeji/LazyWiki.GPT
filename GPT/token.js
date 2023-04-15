@@ -13,7 +13,8 @@ function chunkText({ modelType = "gpt-3.5-turbo", text, chunkSize, overlap }) {
 
     let chunkIndex = 0;
     for (let i = 0; i < tokens.length / (chunkSize + overlap); i++) {
-        let decodeText = new TextDecoder().decode(model.decode(tokens.slice(chunkIndex - overlap, chunkIndex + chunkSize)));
+        let startIndex = (chunkIndex - overlap) > 0 ? chunkIndex - overlap : 0;
+        let decodeText = new TextDecoder().decode(model.decode(tokens.slice(startIndex, chunkIndex + chunkSize)));
         chunkIndex += chunkSize;
         result.push(decodeText.replaceAll("\n", " "));
     }
