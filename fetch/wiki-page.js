@@ -24,12 +24,7 @@ async function getWikiPage(pageTitle) {
     });
 
     for (let i = 0; i < sections.length; i++) {
-        let chunks = chunkText({
-            text: htmlToText(sections[i].text).replaceAll("\n", " "),
-            chunkSize: 350,
-            overlap: 100
-        });
-
+        let chunks = htmlToText(sections[i].text).split("\n");
         sections[i].text = chunks;
     }
 
