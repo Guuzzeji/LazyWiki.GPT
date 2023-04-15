@@ -1,7 +1,7 @@
 import { encoding_for_model } from "@dqbd/tiktoken";
 
 // base on https://blog.devgenius.io/how-to-get-around-openai-gpt-3-token-limits-b11583691b32
-function chunkText({ modelType, text, chunkSize, overlap }) {
+function chunkText({ modelType = "gpt-3.5-turbo", text, chunkSize, overlap }) {
     const model = encoding_for_model(modelType);
     let tokens = model.encode(text);
 
