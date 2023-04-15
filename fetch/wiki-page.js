@@ -2,6 +2,8 @@ import fetch from 'node-fetch';
 import { Readability, isProbablyReaderable } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
 
+import { chunkText } from '../GPT/token.js';
+
 //! Note: would be more useful if we are using a embeding model
 // https://platform.openai.com/docs/guides/embeddings/use-cases
 async function getWikiPage(pageTitle) {
@@ -22,7 +24,13 @@ async function getWikiPage(pageTitle) {
     });
 
     for (let i = 0; i < sections.length; i++) {
-        sections[i].text = htmlToText(sections[i].text);
+        let chunks = chunkText({
+            text: htmlToText(sections[i].text).replaceAll("\n", " "),
+            chunkSize: 350,
+            overlap: 100
+        });
+
+        sections[i].text = chunks;
     }
 
     return {
