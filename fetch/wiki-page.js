@@ -24,7 +24,11 @@ async function getWikiPage(pageTitle) {
     });
 
     for (let i = 0; i < sections.length; i++) {
-        let chunks = htmlToText(sections[i].text).split("\n");
+        let chunks = chunkText({
+            text: htmlToText(sections[i].text),
+            chunkSize: 400,
+            overlap: 150
+        });
         sections[i].text = chunks;
     }
 
@@ -43,10 +47,17 @@ function htmlToText(html) {
         let dom = new JSDOM(par[i]).window.document;
 
         // ! Note to self: Readability will not return a empty string, instead return null
-        if (isProbablyReaderable(dom)) {
-            let text = new Readability(dom).parse();
+        let text = new Readability(dom).parse();
+
+        if (text != null) {
             fullText += "\n" + text.textContent;
         }
+
+        // if (isProbablyReaderable(dom)) {
+        //     let text = new Readability(dom).parse();
+        //     fullText += "\n" + text.textContent;
+        //     console.log(fullText);
+        // }
     }
 
     return fullText.trim();
