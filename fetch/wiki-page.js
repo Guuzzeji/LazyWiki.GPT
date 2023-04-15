@@ -26,7 +26,7 @@ async function getWikiPage(pageTitle) {
     for (let i = 0; i < sections.length; i++) {
         let chunks = chunkText({
             text: htmlToText(sections[i].text),
-            chunkSize: 400,
+            chunkSize: 350,
             overlap: 150
         });
         sections[i].text = chunks;
