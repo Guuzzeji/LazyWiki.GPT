@@ -20,7 +20,7 @@ function chunkText({ modelType, text, chunkSize, overlap }) {
     return result;
 };
 
-function checkTextSize({ modelType, text, tokenLength }) {
+function checkTextSize({ modelType = "gpt-3.5-turbo", text, tokenLength }) {
     const model = encoding_for_model(modelType);
     let tokens = model.encode(text);
 
