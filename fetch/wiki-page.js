@@ -4,6 +4,8 @@ import { JSDOM } from 'jsdom';
 
 import { chunkText } from '../GPT/token.js';
 
+const BLACKLIST_TITLES = ["See also", "Notes", "References", "Bibliography", "Further reading", "External links"];
+
 //! Note: would be more useful if we are using a embeding model
 // https://platform.openai.com/docs/guides/embeddings/use-cases
 async function getWikiPage(pageTitle) {
@@ -20,10 +22,18 @@ async function getWikiPage(pageTitle) {
     sections.unshift({
         id: 0,
         line: "Overview",
-        toclevel: 0,
+        toclevel: 1,
         text: pageData.lead.sections[0].text,
-        tokenText: null
     });
+
+    // Remove uneeded sections
+    for (let i = 0; i < sections.length; i++) {
+        for (let title of BLACKLIST_TITLES) {
+            if (sections[i].line == title) {
+                sections.splice(i, 1);
+            }
+        }
+    }
 
     for (let i = 0; i < sections.length; i++) {
         let chunks = chunkText({
@@ -31,7 +41,7 @@ async function getWikiPage(pageTitle) {
             chunkSize: 400,
             overlap: 150
         });
-        sections[i].tokenText = chunks;
+        sections[i]["tokenText"] = chunks;
     }
 
     return {
@@ -58,5 +68,12 @@ function htmlToText(html) {
 
     return fullText.trim();
 };
+
+async function main() {
+    let page = await getWikiPage("Apple Inc.");
+    console.log(page);
+}
+
+main();
 
 export { getWikiPage };
