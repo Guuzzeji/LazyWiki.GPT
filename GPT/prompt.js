@@ -18,7 +18,7 @@ const promptTempQS = new PromptTemplate({
 
 // Search Wiki page for good sections that will answer the user's question'
 const searchStruct = StructuredOutputParser.fromNamesAndDescriptions({
-    answers: [`Your answer should be from the list of ariticle sections titles. It should be a list of ariticle sections that will answer the user's question. Example: "History", "Corporate culture"`],
+    answers: `Your answer should be from the list of ariticle sections titles. It should be a list of ariticle sections that will answer the user's question. Example: "History", "Corporate culture"`,
 });
 
 const promptSearchWikiPage = new PromptTemplate({
@@ -29,11 +29,11 @@ const promptSearchWikiPage = new PromptTemplate({
 
 // Answer user question with more context
 const answerQSMoreContextStruct = StructuredOutputParser.fromNamesAndDescriptions({
-    answers: [`Your answer to the user question. This should be at most 750 words`],
+    answers: `Your answer to the user question. This should be at most 750 words`,
 });
 
 const promptUserQSMoreContext = new PromptTemplate({
-    template: `AI GPT best on the context given to you and your own knowledge, answer the user questions. \n User question: {question} \n Context: {context} \n {format_instructions}`,
+    template: `AI GPT base on the context given to you and your own knowledge, answer the user questions. \n User question: {question} \n Context: {context} \n {format_instructions}`,
     inputVariables: ["question", "context"],
     partialVariables: { format_instructions: answerQSMoreContextStruct.getFormatInstructions() },
 });
