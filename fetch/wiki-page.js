@@ -31,7 +31,7 @@ async function getWikiPage(pageTitle) {
             chunkSize: 400,
             overlap: 150
         });
-        sections[i].text = chunks;
+        sections[i].tokenText = chunks;
     }
 
     return {
@@ -54,12 +54,6 @@ function htmlToText(html) {
         if (text != null) {
             fullText += "\n" + text.textContent;
         }
-
-        // if (isProbablyReaderable(dom)) {
-        //     let text = new Readability(dom).parse();
-        //     fullText += "\n" + text.textContent;
-        //     console.log(fullText);
-        // }
     }
 
     return fullText.trim();
