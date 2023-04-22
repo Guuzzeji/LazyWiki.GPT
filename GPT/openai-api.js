@@ -7,8 +7,6 @@ const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-//const modelType = process.env.OPENAI_API_MODEL;
-
 const openai = new OpenAIApi(configuration);
 
 // Look at https://github.com/openai/openai-node/issues/107
