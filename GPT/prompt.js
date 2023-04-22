@@ -28,7 +28,7 @@ const promptUserQSMoreContext = new PromptTemplate({
 });
 
 
-export default async function createPrompt(question) {
+async function createGeneralQS(question) {
     let links = await searchWiki(question);
 
     const input = await promptTempQS.format({
@@ -38,3 +38,6 @@ export default async function createPrompt(question) {
 
     return JSON.stringify(input);
 }
+
+
+export { createGeneralQS };
