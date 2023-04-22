@@ -16,31 +16,17 @@ const promptTempQS = new PromptTemplate({
     partialVariables: { format_instructions: answerUserStruct.getFormatInstructions() },
 });
 
-// Search Wiki page for good sections that will answer the user's question'
-const searchStruct = StructuredOutputParser.fromNamesAndDescriptions({
-    answers: `Your answer should be from the list of ariticle sections titles. It should be a list of ariticle sections that will answer the user's question. Example: "History", "Corporate culture"`,
-});
-
-const promptSearchWikiPage = new PromptTemplate({
-    template: `AI GPT select the best section from a wikipedia ariticle that will answer the user questions. You can only select from the list of wikipedia articles section titles given to you. \n User question: {question} \n Wikipedia ariticle Name: {article_name} \n List of ariticle sections titles: {sections} \n {format_instructions}`,
-    inputVariables: ["question", "article_name", "sections"],
-    partialVariables: { format_instructions: searchStruct.getFormatInstructions() },
-});
-
 // Answer user question with more context
 const answerQSMoreContextStruct = StructuredOutputParser.fromNamesAndDescriptions({
     answers: `Your answer to the user question. This should be at most 750 words`,
 });
 
 const promptUserQSMoreContext = new PromptTemplate({
-    template: `AI GPT base on the context given to you and your own knowledge, answer the user questions. \n User question: {question} \n Context: {context} \n {format_instructions}`,
+    template: `AI GPT base on the context given to you, answer the user questions. \n User question: {question} \n Context: {context} \n {format_instructions}`,
     inputVariables: ["question", "context"],
     partialVariables: { format_instructions: answerQSMoreContextStruct.getFormatInstructions() },
 });
 
-
-
-// TODO: Write prompt that will get GPT to return a section from a wikipedia page that will contains more infomation on the user's questions.
 
 export default async function createPrompt(question) {
     let links = await searchWiki(question);
@@ -52,12 +38,3 @@ export default async function createPrompt(question) {
 
     return JSON.stringify(input);
 }
-
-
-// ! Testig prompt system with ChatGPT
-// async function main() {
-//     let prompt = await createPrompt("Who rule over the spanish empire during the 1800s");
-//     console.log(prompt);
-// }
-
-// main();
