@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import createPrompt from '../GPT/prompt.js';
+import { createGeneralQS, createContextQS } from '../GPT/prompt.js';
 import openaiApi from '../GPT/openai-api.js';
 
 import requestLimter from './request-limiter.js';
@@ -11,7 +11,7 @@ router.use(bodyParser.json());
 
 router.post('/general_question', requestLimter, async (req, res) => {
     let jsonReq = req.body;
-    let prompt = await createPrompt(jsonReq.question);
+    let prompt = await createGeneralQS(jsonReq.question);
     let openAIRes = await openaiApi(prompt);
 
     console.log(prompt);
@@ -28,7 +28,12 @@ router.post('/general_question', requestLimter, async (req, res) => {
 
 router.post('/wikipage_question', requestLimter, async (req, res) => {
     let jsonReq = req.body;
-    let prompt = await createPrompt(jsonReq.question);
+
+    let page = await getWikiPage(jsonReq.wikiTitle);
+    page.sections = await createTextEmbedding(page.sections);
+    let wikiText = await searchEmbedding(jsonReq.question, page.sections);
+
+    let prompt = await createContextQS(jsonReq.question, wikiText);
     let openAIRes = await openaiApi(prompt);
 
     console.log(prompt);
