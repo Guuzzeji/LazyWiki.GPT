@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 import { Configuration, OpenAIApi } from "openai";
 import cosineSimilarity from "compute-cosine-similarity";
 
-dotenv.config({ path: "../.env" });
+dotenv.config({ path: "./.env" });
 
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
@@ -39,7 +39,7 @@ async function searchEmbedding(search, wikipage) {
 
     let searchQuery = result.data.data[0].embedding;
 
-    let maxPercent = { page: wikipage[0], similarity: 0 };
+    let maxPercent = { page: wikipage[0], similarity: 0, embeddingIndex: 0 };
 
     for (let x = 0; x < wikipage.length; x++) {
         let page = wikipage[x];
@@ -50,6 +50,7 @@ async function searchEmbedding(search, wikipage) {
             if (maxPercent.similarity < similarity) {
                 maxPercent.page = page;
                 maxPercent.similarity = similarity;
+                maxPercent.embeddingIndex = y;
             }
         }
     }
