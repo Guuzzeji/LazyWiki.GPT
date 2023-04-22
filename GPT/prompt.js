@@ -18,7 +18,7 @@ const promptTempQS = new PromptTemplate({
 
 // Answer user question with more context
 const answerQSMoreContextStruct = StructuredOutputParser.fromNamesAndDescriptions({
-    answers: `Your answer to the user question. This should be at most 750 words`,
+    answers: `Your answer to the user question. This should be at most 750 words. If you cannot answer the user questions wirte "I don't know" and explain why you cannot answer the question.`,
 });
 
 const promptUserQSMoreContext = new PromptTemplate({
@@ -39,5 +39,14 @@ async function createGeneralQS(question) {
     return JSON.stringify(input);
 }
 
+async function createContextQS(question, text) {
+    const input = await promptUserQSMoreContext.format({
+        question: question,
+        context: text
+    });
 
-export { createGeneralQS };
+    return JSON.stringify(input);
+}
+
+
+export { createGeneralQS, createContextQS };
