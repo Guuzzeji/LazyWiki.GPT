@@ -9,10 +9,12 @@ import requestLimter from './request-limiter.js';
 const router = express.Router();
 router.use(bodyParser.json());
 
-router.get('/question=:qs', requestLimter, async (req, res) => {
-    let prompt = await createPrompt(req.params.qs);
+router.post('/question', requestLimter, async (req, res) => {
+    let jsonReq = req.body;
+    let prompt = await createPrompt(jsonReq.question);
     let openAIRes = await openaiApi(prompt);
 
+    console.log(prompt);
     console.log(openAIRes.data);
 
     // Try to parse json from gpt
