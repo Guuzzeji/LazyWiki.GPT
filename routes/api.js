@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 
 import createPrompt from '../GPT/prompt.js';
 import openaiApi from '../GPT/openai-api.js';
@@ -6,6 +7,7 @@ import openaiApi from '../GPT/openai-api.js';
 import requestLimter from './request-limiter.js';
 
 const router = express.Router();
+router.use(bodyParser.json());
 
 router.get('/question=:qs', requestLimter, async (req, res) => {
     let prompt = await createPrompt(req.params.qs);
