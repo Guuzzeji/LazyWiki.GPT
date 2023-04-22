@@ -3,7 +3,7 @@ import { StructuredOutputParser } from "langchain/output_parsers";
 
 import searchWiki from "../fetch/wiki-search.js";
 
-// Answer general user question
+//! Answer general user question
 const answerUserStruct = StructuredOutputParser.fromNamesAndDescriptions({
     answers: `Provide answer with source citation in this format: some text[^1](website url). Answer limit is 500 words. Write "I don't know" if you are unable to answer, along with a reason why you cannot answer the question. Avoid using double quotes in answer.`,
     best: "Suggest the most probable website URL from the provided list to answer the user's question. Leave blank if unable to answer.",
@@ -16,7 +16,7 @@ const promptTempQS = new PromptTemplate({
     partialVariables: { format_instructions: answerUserStruct.getFormatInstructions() },
 });
 
-// Answer user question with more context
+//! Answer user question with more context
 const answerQSMoreContextStruct = StructuredOutputParser.fromNamesAndDescriptions({
     answers: `Your answer to the user question. This should be at most 750 words. If you cannot answer the user questions wirte "I don't know" and explain why you cannot answer the question.`,
 });
