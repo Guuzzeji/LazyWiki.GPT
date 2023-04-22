@@ -69,11 +69,4 @@ function htmlToText(html) {
     return fullText.trim();
 };
 
-async function main() {
-    let page = await getWikiPage("Apple Inc.");
-    console.log(page);
-}
-
-main();
-
 export { getWikiPage };
