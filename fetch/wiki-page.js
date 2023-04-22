@@ -20,7 +20,9 @@ async function getWikiPage(pageTitle) {
     sections.unshift({
         id: 0,
         line: "Overview",
-        text: pageData.lead.sections[0].text
+        toclevel: 0,
+        text: pageData.lead.sections[0].text,
+        tokenText: null
     });
 
     for (let i = 0; i < sections.length; i++) {
