@@ -33,6 +33,10 @@ async function getWikiPage(pageTitle) {
                 sections.splice(i, 1);
             }
         }
+
+        if (sections[i].text.length < 100) {
+            sections.splice(i, 1);
+        }
     }
 
     for (let i = 0; i < sections.length; i++) {
