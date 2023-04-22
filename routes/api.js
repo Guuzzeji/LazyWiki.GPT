@@ -13,14 +13,6 @@ router.get('/question=:qs', requestLimter, async (req, res) => {
 
     console.log(openAIRes.data);
 
-    // Try to parse json from gpt-3 (old model)
-    // try {
-    //     let resJson = JSON.parse(openAIRes.data.choices[0].text.replace("```json", "").replace("```", ""));
-    //     res.send(resJson);
-    // } catch {
-    //     res.send(openAIRes.data.choices[0].text);
-    // }
-
     // Try to parse json from gpt
     try {
         let resJson = JSON.parse(openAIRes.data.choices[0].message.content.replace("```json", "").replace("```", ""));
@@ -28,7 +20,6 @@ router.get('/question=:qs', requestLimter, async (req, res) => {
     } catch {
         res.send(openAIRes.data.choices[0].message.content);
     }
-
 });
 
 export { router };
