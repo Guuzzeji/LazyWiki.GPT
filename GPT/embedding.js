@@ -10,28 +10,22 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-async function createTextEmbedding(wikipage) {
-    for (let x = 0; x < wikipage.length; x++) {
-        let section = wikipage[x];
+async function createTextEmbedding(tokenText) {
+    let vectors = [];
 
-        let vectors = [];
+    for (let y = 0; y < tokenText.length; y++) {
+        let result = await openai.createEmbedding({
+            input: tokenText[y],
+            model: "text-embedding-ada-002"
+        });
 
-        for (let y = 0; y < section.tokenText.length; y++) {
-            let result = await openai.createEmbedding({
-                input: section.tokenText[y],
-                model: "text-embedding-ada-002"
-            });
-
-            vectors.push(result.data.data[0].embedding);
-        }
-
-        section["embedding"] = vectors;
+        vectors.push(result.data.data[0].embedding);
     }
 
-    return wikipage;
+    return vectors;
 }
 
-async function searchEmbedding(search, wikipage) {
+async function searchEmbedding(search, embedding) {
     let result = await openai.createEmbedding({
         input: search,
         model: "text-embedding-ada-002"
@@ -39,19 +33,14 @@ async function searchEmbedding(search, wikipage) {
 
     let searchQuery = result.data.data[0].embedding;
 
-    let maxPercent = { page: wikipage[0], similarity: 0, embeddingIndex: 0 };
+    let maxPercent = { index: 0, similarity: 0, };
 
-    for (let x = 0; x < wikipage.length; x++) {
-        let page = wikipage[x];
+    for (let y = 0; y < embedding.length; y++) {
+        let similarity = cosineSimilarity(embedding[y], searchQuery);
 
-        for (let y = 0; y < page.embedding.length; y++) {
-            let similarity = cosineSimilarity(page.embedding[y], searchQuery);
-
-            if (maxPercent.similarity < similarity) {
-                maxPercent.page = page;
-                maxPercent.similarity = similarity;
-                maxPercent.embeddingIndex = y;
-            }
+        if (maxPercent.similarity < similarity) {
+            maxPercent.index = y;
+            maxPercent.similarity = similarity;
         }
     }
 
