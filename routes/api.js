@@ -32,7 +32,7 @@ router.post('/general-question', requestLimter, async (req, res) => {
 router.post('/wikipage-question', requestLimter, async (req, res) => {
     let jsonReq = req.body;
 
-    let page = await getWikiPage(jsonReq.wikiTitle);
+    let page = await getWikiPage(jsonReq.wikiURL.replace("https://en.wikipedia.org/wiki/", "").trim());
 
     let subTitles = [];
     for (let i = 0; i < page.sections.length; i++) {
