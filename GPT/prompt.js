@@ -27,6 +27,19 @@ const promptUserQSMoreContext = new PromptTemplate({
     partialVariables: { format_instructions: answerQSMoreContextStruct.getFormatInstructions() },
 });
 
+// TODO create a prompt for GPT to select the best title the will most likely answer to the user question when doing context base search. Similar to how the general question works. Then using that emebed each paragraph of that section and have GPT come up with anaswer. Make GPT store titles as a list / json array. So we can loop through and grather info for each text. This will save on embedding and have better answer b/c we are getting the most relevent text from wiki
+
+//! Search Wiki page for good sections that will answer the user's question'
+const searchStruct = StructuredOutputParser.fromNamesAndDescriptions({
+    answers: [`Your answer should be from the list of ariticle sections titles. It should be a list of ariticle sections that will answer the user's question. Example: "History", "Corporate culture"`],
+});
+
+const promptSearchWikiPage = new PromptTemplate({
+    template: `AI GPT select the best sections from a wikipedia ariticle that will answer the user questions. You can only select from the list of wikipedia articles section titles given to you. \n User question: {question} \n List of ariticle sections titles: {sections} \n {format_instructions}`,
+    inputVariables: ["question", "sections"],
+    partialVariables: { format_instructions: searchStruct.getFormatInstructions() },
+});
+
 
 async function createGeneralQS(question) {
     let links = await searchWiki(question);
@@ -48,5 +61,15 @@ async function createContextQS(question, text) {
     return JSON.stringify(input);
 }
 
+async function createSearchWikiQS(question, sections) {
+    const input = await promptSearchWikiPage.format({
+        question: question,
+        sections: sections
+    });
 
-export { createGeneralQS, createContextQS };
+    return JSON.stringify(input);
+}
+
+
+
+export { createGeneralQS, createContextQS, createSearchWikiQS };
