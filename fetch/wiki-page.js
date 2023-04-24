@@ -34,7 +34,7 @@ async function getWikiPage(pageTitle) {
             }
         }
 
-        if (sections[i].text.length < 100) {
+        if (sections[i].text.length < 250) {
             sections.splice(i, 1);
         }
     }
