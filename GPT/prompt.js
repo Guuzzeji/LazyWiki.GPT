@@ -6,8 +6,8 @@ import searchWiki from "../fetch/wiki-search.js";
 //! Answer general user question
 const answerUserStruct = StructuredOutputParser.fromNamesAndDescriptions({
     answers: `Provide answer with source citation in this format: some text[^1](website url). Answer limit is 500 words. Write "I don't know" if you are unable to answer, along with a reason why you cannot answer the question. Avoid using double quotes in answer.`,
-    best: "Suggest the most probable website URL from the provided list to answer the user's question. Leave blank if unable to answer.",
-    sources: ["Provide a list of website URLs from the given list that were used to answer the user's question in the order of citations. If you could not answer the question, leave this blank."],
+    best: "Suggest the most probable website URL from the provided list to answer the user's question.",
+    sources: ["Provide a list of website URLs from the given list that were used to answer the user's question in the order of citations."],
 });
 
 const promptTempQS = new PromptTemplate({
