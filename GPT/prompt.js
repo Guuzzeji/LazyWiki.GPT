@@ -27,8 +27,6 @@ const promptUserQSMoreContext = new PromptTemplate({
     partialVariables: { format_instructions: answerQSMoreContextStruct.getFormatInstructions() },
 });
 
-// TODO create a prompt for GPT to select the best title the will most likely answer to the user question when doing context base search. Similar to how the general question works. Then using that emebed each paragraph of that section and have GPT come up with anaswer. Make GPT store titles as a list / json array. So we can loop through and grather info for each text. This will save on embedding and have better answer b/c we are getting the most relevent text from wiki
-
 //! Search Wiki page for good sections that will answer the user's question'
 const searchStruct = StructuredOutputParser.fromNamesAndDescriptions({
     answers: [`Your answer should be from the list of ariticle sections titles. It should be a list of ariticle sections that will answer the user's question. Example: "History", "Corporate culture"`],
