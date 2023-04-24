@@ -12,7 +12,7 @@ import requestLimter from './request-limiter.js';
 const router = express.Router();
 router.use(bodyParser.json());
 
-router.post('/general-question', requestLimter, async (req, res) => {
+router.post('/answerQS/generalAnswer', requestLimter, async (req, res) => {
     let jsonReq = req.body;
     let prompt = await createGeneralQS(jsonReq.question);
     let openAIRes = await openaiApi(prompt);
@@ -29,7 +29,7 @@ router.post('/general-question', requestLimter, async (req, res) => {
     }
 });
 
-router.post('/wikipage-question', requestLimter, async (req, res) => {
+router.post('/answerQS/contextAnswer', requestLimter, async (req, res) => {
     let jsonReq = req.body;
 
     let page = await getWikiPage(jsonReq.wikiURL.replace("https://en.wikipedia.org/wiki/", "").trim());
