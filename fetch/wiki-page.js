@@ -43,7 +43,7 @@ async function getWikiPage(pageTitle) {
         let chunks = chunkText({
             text: htmlToText(sections[i].text),
             chunkSize: 200,
-            overlap: 150
+            overlap: 100
         });
         sections[i]["tokenText"] = chunks;
     }
