@@ -16,7 +16,7 @@ export default async function (promptStr) {
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: promptStr }],
         max_tokens: parseInt(process.env.OPENAI_API_MAX_TOKENS),
-        temperature: 0.7,
+        temperature: 0.4,
         stream: false,
     });
 
