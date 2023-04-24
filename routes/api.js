@@ -29,6 +29,7 @@ router.post('/answerQS/generalAnswer', requestLimter, async (req, res) => {
     }
 });
 
+// TODO: Edit this to allow for mulit wiki search, use cohere.ai to summary different text and then combine it to a final answer
 router.post('/answerQS/contextAnswer', requestLimter, async (req, res) => {
     let jsonReq = req.body;
 
