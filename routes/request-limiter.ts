@@ -1,6 +1,6 @@
-const requests = {};
+const requests: any = {};
 
-export default function requestLimter(req, res, next) {
+export default function requestLimter(req: any, res: any, next: any): void {
     const ip = req.ip;
     const now = Date.now();
     const timeFrame = 0.5 * 60 * 1000; // 5 minutes
