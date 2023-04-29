@@ -1,6 +1,6 @@
 // From: https://geeklad.com/remove-stop-words-in-javascript
 
-const stopWords = [
+const stopWords: string[] = [
     'a',
     'about',
     'above',
@@ -432,25 +432,19 @@ const stopWords = [
     'z'
 ];
 
-export default function removeStopWords(str) {
+export default function removeStopWords(str: string): string {
     let words = str.split(' ');
-    let result = "";
 
     for (let i = 0; i < words.length; i++) {
         let word = words[i];
         for (let j = 0; j < stopWords.length; j++) {
             if (word.toLowerCase() == stopWords[j]) {
-                word = null;
+                words.splice(i, 1)
                 break;
             }
         }
-
-        if (word != null) {
-            result += " " + word;
-        }
-
     }
 
-    return result.trim();
+    return words.toString().trim();
 };
 
