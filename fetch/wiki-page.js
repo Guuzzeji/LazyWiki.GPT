@@ -9,23 +9,10 @@ import { chunkText } from '../OpenAI/token.js';
 
 const BLACKLIST_TITLES = ["See also", "Notes", "References", "Bibliography", "Further reading", "External links"];
 
-interface Sections {
-    id: number;
-    line: string;
-    toclevel: number;
-    text: string;
-    tokenText: string
-}
-
-interface WikiPage {
-    title: string;
-    sections: Sections[];
-}
-
-async function getWikiPage(pageTitle: string): Promise<WikiPage> {
+async function getWikiPage(pageTitle) {
     let urlTitle = encodeURIComponent(pageTitle);
 
-    let pageData: any = await fetch(`https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${urlTitle}`)
+    let pageData = await fetch(`https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${urlTitle}`)
         .then((response) => {
             return response.json();
         }).then((data) => {
@@ -68,7 +55,7 @@ async function getWikiPage(pageTitle: string): Promise<WikiPage> {
     };
 };
 
-function htmlToText(html: string): string {
+function htmlToText(html) {
     let fullText = "";
 
     let par = html.split("\n");

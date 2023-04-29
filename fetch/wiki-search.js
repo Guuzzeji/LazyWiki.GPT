@@ -3,13 +3,7 @@ import { JSDOM } from 'jsdom';
 
 import removeStopWords from './stop-word.js';
 
-interface SearchResult {
-    title: string;
-    link: string;
-    snippet: string;
-}
-
-export default async function searchWiki(str: string): Promise<SearchResult[]> {
+export default async function searchWiki(str) {
     let encodeStr = encodeURIComponent(removeStopWords(str));
 
     let rawHtml = await fetch(`https://en.wikipedia.org/w/index.php?search=${encodeStr}&title=Special:Search&profile=advanced&fulltext=1&ns0=1"`).
@@ -19,7 +13,7 @@ export default async function searchWiki(str: string): Promise<SearchResult[]> {
             return data;
         });
 
-    let searchResultsJson: SearchResult[] = [];
+    let searchResultsJson = [];
 
     let parseHtml = new JSDOM(rawHtml).window.document;
     let pageResultList = parseHtml
