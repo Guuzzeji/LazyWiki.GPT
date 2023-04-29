@@ -42,46 +42,6 @@ router.post('/answer/general', requestLimter, async (req, res) => {
 router.post('/answer/context', requestLimter, async (req, res) => {
     let jsonReq = req.body;
 
-    let page = await getWikiPage(cleanWikiURL(jsonReq.wikiURL));
-
-    let subTitles = [];
-    for (let i = 0; i < page.sections.length; i++) {
-        subTitles.push(page.sections[i].line);
-    }
-
-    let searchPrompt = await createSearchWikiQS(jsonReq.question, subTitles);
-    let gptSearchSelect = await GPT(searchPrompt);
-    let topSearchSections = cleanGPTResponse(gptSearchSelect.data.choices[0].message.content);
-
-    // console.log(topSearchSections);
-
-    let revelentText = [];
-    for (let i = 0; i < page.sections.length; i++) {
-        for (let title in topSearchSections.answers) {
-            if (page.sections[i].line == topSearchSections.answers[title]) {
-                let emebeding = await createTextEmbedding(page.sections[i].tokenText);
-                let wikiText = await searchEmbedding(jsonReq.question, emebeding);
-                revelentText.push(page.sections[i].tokenText[wikiText.index]);
-            }
-        }
-    }
-
-    // console.log(revelentText);
-
-    let contextPrompt = await createContextQS(jsonReq.question, revelentText.toString());
-    let answerQS = await GPT(contextPrompt);
-
-    // console.log(prompt);
-    // console.log(contextPrompt.data);
-
-    // Try to parse json from gpt
-    res.send(cleanGPTResponse(answerQS.data.choices[0].message.content));
-});
-
-// TODO: Edit this to allow for mulit wiki search, use cohere.ai to summary different text and then combine it to a final answer
-router.post('/answer/contextwide', requestLimter, async (req, res) => {
-    let jsonReq = req.body;
-
     let pages = [];
     for (let i = 0; i < jsonReq.wikiURLS.length; i++) {
         pages.push(await getWikiPage(cleanWikiURL(jsonReq.wikiURLS[i])));
