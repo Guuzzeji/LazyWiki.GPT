@@ -26,7 +26,6 @@ function cleanWikiURL(URL) {
         .trim();
 }
 
-
 router.post('/answer/general', requestLimter, async (req, res) => {
     let jsonReq = req.body;
     let prompt = await createGeneralQS(jsonReq.question);
