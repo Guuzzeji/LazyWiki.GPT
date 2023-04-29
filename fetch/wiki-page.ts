@@ -1,17 +1,31 @@
+//! Note: would be more useful if we are using a embeding model
+// https://platform.openai.com/docs/guides/embeddings/use-cases
+
 import fetch from 'node-fetch';
-import { Readability, isProbablyReaderable } from '@mozilla/readability';
+import { Readability } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
 
 import { chunkText } from '../GPT/token.js';
 
 const BLACKLIST_TITLES = ["See also", "Notes", "References", "Bibliography", "Further reading", "External links"];
 
-//! Note: would be more useful if we are using a embeding model
-// https://platform.openai.com/docs/guides/embeddings/use-cases
-async function getWikiPage(pageTitle) {
+interface Sections {
+    id: number;
+    line: string;
+    toclevel: number;
+    text: string;
+    tokenText: string
+}
+
+interface WikiPage {
+    title: string;
+    sections: Sections[];
+}
+
+async function getWikiPage(pageTitle: string): Promise<WikiPage> {
     let urlTitle = encodeURIComponent(pageTitle);
 
-    let pageData = await fetch(`https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${urlTitle}`)
+    let pageData: any = await fetch(`https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${urlTitle}`)
         .then((response) => {
             return response.json();
         }).then((data) => {
@@ -54,7 +68,7 @@ async function getWikiPage(pageTitle) {
     };
 };
 
-function htmlToText(html) {
+function htmlToText(html: string): string {
     let fullText = "";
 
     let par = html.split("\n");
