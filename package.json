@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
-    "build": "npx ./",
-    "build&run": "npx ./ && nodemon ./build/index.js"
+    "build": "npx tsc",
+    "blrun": "npx tsc && nodemon ./build/index.js"
   },
   "author": "",
   "license": "ISC",
