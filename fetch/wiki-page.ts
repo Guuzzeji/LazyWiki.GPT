@@ -5,7 +5,7 @@ import fetch from 'node-fetch';
 import { Readability } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
 
-import { chunkText } from '../GPT/token.js';
+import { chunkText } from '../OpenAI/token.js';
 
 const BLACKLIST_TITLES = ["See also", "Notes", "References", "Bibliography", "Further reading", "External links"];
 

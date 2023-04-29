@@ -1,9 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import { createGeneralQS, createContextQS, createSearchWikiQS } from '../GPT/prompt.js';
-import { createTextEmbedding, searchEmbedding } from '../GPT/embedding.js';
-import openaiApi from '../GPT/openai-api.js';
+import { createGeneralQS, createContextQS, createSearchWikiQS } from '../OpenAI/prompt.js';
+import { createTextEmbedding, searchEmbedding } from '../OpenAI/embedding.js';
+import openaiApi from '../OpenAI/gpt.js';
 
 import { getWikiPage } from '../fetch/wiki-page.js';
 
