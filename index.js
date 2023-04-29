@@ -11,7 +11,6 @@ const port = process.env.PORT || 3000;
 app.use(morgan('tiny'));
 app.use("/API", api);
 
-
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
