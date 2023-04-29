@@ -3,7 +3,7 @@ import { StructuredOutputParser } from "langchain/output_parsers";
 
 //! Answer user question with more context
 const answer = StructuredOutputParser.fromNamesAndDescriptions({
-    answers: `Your answer to the user question. If you cannot answer the user questions wirte "I don't know" and explain why you cannot answer the question.`,
+    answers: `Your answer to the user question. You can use Markdown to answer the question. If you cannot answer the user questions wirte "I don't know" and explain why you cannot answer the question.`,
 });
 
 const prompt = new PromptTemplate({
