@@ -29,7 +29,7 @@ async function getWikiPage(pageTitle) {
     // Remove uneeded sections
     for (let i = 0; i < sections.length; i++) {
         for (let title of BLACKLIST_TITLES) {
-            if (sections[i].line == title) {
+            if (sections[i] != null && sections[i].line == title) {
                 sections.splice(i, 1);
             }
         }
