@@ -7,7 +7,8 @@ import searchWiki from "../fetch/wiki-search.js";
 const answerUserStruct = StructuredOutputParser.fromNamesAndDescriptions({
     answers: `Provide answer with source citation in this format: some text[^1](website url). Answer limit is 500 words. Write "I don't know" if you are unable to answer, along with a reason why you cannot answer the question. Avoid using double quotes in answer.`,
     best: "Suggest the most probable website URL from the provided list to answer the user's question.",
-    sources: ["Provide a list of website URLs from the given list that were used to answer the user's question in the order of citations."],
+    sources: ["Provide a list of website URLs from the given to you list that were used to answer the user's question in the order of citations."],
+    listBest: ["Select websites that can futher answer the user's question, select 2 to 4 websites and place them here."]
 });
 
 const promptTempQS = new PromptTemplate({
@@ -18,22 +19,22 @@ const promptTempQS = new PromptTemplate({
 
 //! Answer user question with more context
 const answerQSMoreContextStruct = StructuredOutputParser.fromNamesAndDescriptions({
-    answers: `Your answer to the user question. This should be at most 750 words. If you cannot answer the user questions wirte "I don't know" and explain why you cannot answer the question.`,
+    answers: `Your answer to the user question. If you cannot answer the user questions wirte "I don't know" and explain why you cannot answer the question.`,
 });
 
 const promptUserQSMoreContext = new PromptTemplate({
-    template: `AI GPT base on the context given to you, answer the user questions. \n User question: {question} \n Context: {context} \n {format_instructions}`,
+    template: `AI GPT base on the context given to you and your knowledge of the world, answer the user questions. \n User question: {question} \n Context: {context} \n {format_instructions}`,
     inputVariables: ["question", "context"],
     partialVariables: { format_instructions: answerQSMoreContextStruct.getFormatInstructions() },
 });
 
 //! Search Wiki page for good sections that will answer the user's question'
 const searchStruct = StructuredOutputParser.fromNamesAndDescriptions({
-    answers: [`Your answer should be from the list of ariticle sections titles. It should be a list of ariticle sections that will answer the user's question. Example: "History", "Corporate culture"`],
+    answers: [`Your answer should be from the list of ariticle sections titles. It should be a list of ariticle sections that will answer the user's question. At max you can only select 5 articles section titles.Example: "History", "Corporate culture"`],
 });
 
 const promptSearchWikiPage = new PromptTemplate({
-    template: `AI GPT select the best sections from a wikipedia ariticle that will answer the user questions. You can only select from the list of wikipedia articles section titles given to you. \n User question: {question} \n List of ariticle sections titles: {sections} \n {format_instructions}`,
+    template: `AI GPT select the best sections from a wikipedia ariticle that will answer the user questions. You can only select from the list of wikipedia articles section titles given to you. Always write your Answer in JSON format as shown. \n User question: {question} \n List of ariticle sections titles: {sections} \n JSON format: {format_instructions}`,
     inputVariables: ["question", "sections"],
     partialVariables: { format_instructions: searchStruct.getFormatInstructions() },
 });
