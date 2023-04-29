@@ -5,7 +5,7 @@ import searchWiki from "../../fetch/wiki-search.js";
 
 //! Answer general user question
 const answer = StructuredOutputParser.fromNamesAndDescriptions({
-    answers: `Provide answer with source citation in this format: some text[^1](website url). You can use Markdown to answer the question. Answer limit is 500 words. Write "I don't know" if you are unable to answer, along with a reason why you cannot answer the question. Avoid using double quotes in answer.`,
+    answers: `Provide answer with source citation in this format: some text[^1](website url). Use Markdown to answer the question. Answer limit is 500 words. Write "I don't know" if you are unable to answer, along with a reason why you cannot answer the question. Avoid using double quotes in answer.`,
     best: "Suggest the most probable website URL from the provided list to answer the user's question.",
     sources: ["Provide a list of website URLs from the given to you list that were used to answer the user's question in the order of citations."],
     listBest: ["Select websites that can futher answer the user's question, select 2 to 4 websites and place them here."]
