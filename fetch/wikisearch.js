@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { JSDOM } from 'jsdom';
 
-import removeStopWords from './stop-word.js';
+import removeStopWords from './stopword.js';
 
 export default async function searchWiki(str) {
     let encodeStr = encodeURIComponent(removeStopWords(str));

@@ -5,7 +5,7 @@ import { createGeneralQS, createContextQS, createSearchWikiQS } from '../OpenAI/
 import { createTextEmbedding, searchEmbedding } from '../OpenAI/embedding.js';
 import GPT from '../OpenAI/gpt.js';
 
-import { getWikiPage } from '../fetch/wiki-page.js';
+import { getWikiPage } from '../fetch/wikipage.js';
 import requestLimter from './request-limiter.js';
 
 const router = express.Router();

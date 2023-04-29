@@ -1,7 +1,7 @@
 import { PromptTemplate } from "langchain/prompts";
 import { StructuredOutputParser } from "langchain/output_parsers";
 
-import searchWiki from "../../fetch/wiki-search.js";
+import searchWiki from "../../fetch/wikisearch.js";
 
 //! Answer general user question
 const answer = StructuredOutputParser.fromNamesAndDescriptions({
