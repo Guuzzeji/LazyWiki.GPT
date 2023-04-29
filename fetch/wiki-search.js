@@ -27,7 +27,6 @@ export default async function searchWiki(str) {
 
     // Loops and gets the top 5 results from wiki search
     for (let i = 0; i < ((pageResultList.length > 5) ? 5 : pageResultList.length); i++) {
-        console.log();
         searchResultsJson.push({
             title: pageResultList[i].querySelector(".mw-search-result-heading").textContent.trim(),
             link: `https://en.wikipedia.org/${pageResultList[i]
@@ -39,6 +38,8 @@ export default async function searchWiki(str) {
             snippet: pageResultList[i].querySelector(".searchresult").textContent.trim()
         });
     }
+
+    console.log(searchResultsJson);
 
     return searchResultsJson;
 };
