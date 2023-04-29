@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import { createGeneralQS, createContextQS, createSearchWikiQS } from '../OpenAI/prompt.js';
+import { createGeneralQS, createContextQS, createSearchWikiQS } from '../OpenAI/prompts/prompt.js';
 import { createTextEmbedding, searchEmbedding } from '../OpenAI/embedding.js';
 import openaiApi from '../OpenAI/gpt.js';
 
