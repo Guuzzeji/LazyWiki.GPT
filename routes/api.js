@@ -77,13 +77,13 @@ router.post('/answer/context', requestLimter, async (req, res) => {
         }
     }
 
-    console.log(revelentText);
+    // console.log(revelentText);
 
     let contextPrompt = await createContextQS(jsonReq.question, revelentText.toString());
     let answerQS = await GPT(contextPrompt);
 
-    console.log(prompt);
-    console.log(answerQS.data);
+    // console.log(prompt);
+    // console.log(answerQS.data);
 
     // Try to parse json from gpt
     res.send(cleanGPTResponse(answerQS.data.choices[0].message.content));
