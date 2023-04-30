@@ -1,13 +1,14 @@
+//! Note: would be more useful if we are using a embeding model
+// https://platform.openai.com/docs/guides/embeddings/use-cases
+
 import fetch from 'node-fetch';
-import { Readability, isProbablyReaderable } from '@mozilla/readability';
+import { Readability } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
 
-import { chunkText } from '../GPT/token.js';
+import { chunkText } from '../OpenAI/token.js';
 
 const BLACKLIST_TITLES = ["See also", "Notes", "References", "Bibliography", "Further reading", "External links"];
 
-//! Note: would be more useful if we are using a embeding model
-// https://platform.openai.com/docs/guides/embeddings/use-cases
 async function getWikiPage(pageTitle) {
     let urlTitle = encodeURIComponent(pageTitle);
 
