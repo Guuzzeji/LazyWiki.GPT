@@ -11,20 +11,7 @@ import requestLimter from './request-limiter.js';
 const router = express.Router();
 router.use(bodyParser.json());
 
-function cleanGPTResponse(text) {
-    try {
-        let json = JSON.parse(text.replace("```json", "").replace("```", "").trim());
-        return json;
-    } catch {
-        return text;
-    }
-}
-
-function cleanWikiURL(URL) {
-    return URL.replace("https://en.wikipedia.org/wiki/", "")
-        .replace("https://en.wikipedia.org//wiki/", "")
-        .trim();
-}
+import { cleanGPTResponse, cleanWikiURL } from "./utils.js";
 
 router.post('/answer/general', requestLimter, async (req, res) => {
     let jsonReq = req.body;
