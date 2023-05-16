@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, Space } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Button, Card, Collapse } from 'antd';
 
 
 export interface General {
     answer: string
     sources: string[]
     listBest: string[]
+}
+
+export interface Context {
+    answer: string
+    sources: string[]
 }
 
 function SourceItem(url: string) {
@@ -17,8 +21,8 @@ function SourceItem(url: string) {
     )
 }
 
+const { Panel } = Collapse;
 export function GeneralAnswer(answer: General) {
-
     let sources = [];
     for (let i = 0; i < answer.sources.length; i++) {
         sources.push(SourceItem(answer.sources[i]))
@@ -30,32 +34,56 @@ export function GeneralAnswer(answer: General) {
     }
 
     return (
-        <Card>
+        <Card style={{ maxWidth: "100%", minWidth: "300px", width: "30vw" }}>
             <p>{answer.answer}</p>
 
-            <p><u>Futher Your Answer</u></p>
-            <ol>
-                {bestSources}
-            </ol>
-
-            <p><u>Sources</u></p>
-            <ol>
-                {sources}
-            </ol>
+            <div style={{ marginTop: "25px" }}></div>
 
             <center>
-                <Button type="dashed">Context Answer</Button>
+                <Button type="dashed">Deep Context Answer</Button>
             </center>
+
+            <div style={{ marginTop: "25px" }}></div>
+
+            <Collapse>
+                <Panel header="Sources" key="1">
+                    <ol>
+                        {sources}
+                    </ol>
+                </Panel>
+
+                <Panel header="Get More Answers" key="2">
+                    <ul>
+                        {bestSources}
+                    </ul>
+                </Panel>
+            </Collapse>
+
         </Card>
     );
 }
 
-export function ContextAnswer() {
+export function ContextAnswer(answer: Context) {
+    let sources = [];
+    for (let i = 0; i < answer.sources.length; i++) {
+        sources.push(SourceItem(answer.sources[i]))
+    }
 
     return (
-        <div>
+        <Card style={{ maxWidth: "100%", minWidth: "300px", width: "30vw" }}>
+            <p>{answer.answer}</p>
 
-        </div>
+            <div style={{ marginTop: "25px" }}></div>
+
+            <Collapse>
+                <Panel header="Sources" key="1">
+                    <ol>
+                        {sources}
+                    </ol>
+                </Panel>
+            </Collapse>
+
+        </Card>
     );
 }
 
