@@ -47,13 +47,13 @@ export function GeneralAnswer(answer: General) {
 
             <Collapse>
                 <Panel header="Sources" key="1">
-                    <ol style={{ overflowWrap: "break-word" }}>
+                    <ol style={{ overflowWrap: "anywhere" }}>
                         {sources}
                     </ol>
                 </Panel>
 
                 <Panel header="Get More Answers" key="2">
-                    <ul style={{ overflowWrap: "break-word" }}>
+                    <ul style={{ overflowWrap: "anywhere" }}>
                         {bestSources}
                     </ul>
                 </Panel>
@@ -76,7 +76,7 @@ export function ContextAnswer(answer: Context) {
 
             <Collapse>
                 <Panel header="Sources" key="1">
-                    <ol style={{ overflowWrap: "break-word" }}>
+                    <ol style={{ overflowWrap: "anywhere" }}>
                         {sources}
                     </ol>
                 </Panel>
