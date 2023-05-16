@@ -14,6 +14,11 @@ router.use(bodyParser.json());
 import { cleanGPTResponse, cleanWikiURL } from "./utils.js";
 
 router.post('/answer/general', requestLimter, async (req, res) => {
+    if (req.body == null || req.body.question == null || req.body.question == undefined) {
+        res.status(500).send({ error: "bad body" });
+    }
+
+
     let jsonReq = req.body;
     let prompt = await createGeneralQS(jsonReq.question);
     let openAIRes = await GPT(prompt);
