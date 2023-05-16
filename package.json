@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "build-client": "cd ./public/client/ && npm run build",
+    "build-dev": "npm run build-client && npm run dev"
   },
   "author": "",
   "license": "ISC",
