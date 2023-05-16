@@ -5,38 +5,10 @@ import { SearchOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
 import './App.css';
 
-import { ContextAnswer, GeneralAnswer, General } from './components/Answer'
+import { ContextAnswer, GeneralAnswer, General } from './components/Answer';
+import { fetchGeneralAnswer } from './fetch';
 
 const { TextArea } = Input;
-
-async function fetchGeneralAnswer(question: string, callbackSuccess: Function, callbackFailure: Function): Promise<General | null> {
-  return await fetch("API/answer/general", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      question: question
-    })
-  })
-    .then(response => { return response.json() })
-    .then(function (data) {
-      let answer: General = {
-        answer: data.answers,
-        sources: data.sources,
-        listBest: data.listBest
-      }
-
-      callbackSuccess(answer)
-      return answer;
-    })
-    .catch((error) => {
-      alert("Error");
-      console.log(error)
-      callbackFailure()
-      return null;
-    })
-}
 
 function App() {
   const [question, setQuestion] = useState('');
@@ -94,7 +66,6 @@ function App() {
               autoSize={{ minRows: 2, maxRows: 10 }}
             />
           )}
-
 
           <div style={{ marginTop: "25px" }}></div>
 
