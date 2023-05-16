@@ -9,12 +9,43 @@ import { ContextAnswer, GeneralAnswer, General } from './components/Answer'
 
 const { TextArea } = Input;
 
+async function fetchGeneralAnswer(question: string, callbackSuccess: Function, callbackFailure: Function): Promise<General | null> {
+  return await fetch("API/answer/general", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      question: question
+    })
+  })
+    .then(response => { return response.json() })
+    .then(function (data) {
+      let answer: General = {
+        answer: data.answers,
+        sources: data.sources,
+        listBest: data.listBest
+      }
+
+      callbackSuccess(answer)
+      return answer;
+    })
+    .catch((error) => {
+      alert("Error");
+      console.log(error)
+      callbackFailure()
+      return null;
+    })
+}
+
 function App() {
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [answer, setAnswer] = useState<any | null>(null);
+  let gptAnswer: General | null = null;
 
   async function getGeneralAnswer() {
+    setAnswer(null);
     setIsLoading(true);
 
     if (question == "" || question == null) {
@@ -23,25 +54,17 @@ function App() {
       return;
     }
 
-    await fetch("/answers/general")
-      .then(response => { return response.json() })
-      .then(function (data) {
-        let answer: General = {
-          answer: data.answer,
-          sources: data.sources,
-          listBest: data.listBest
-        }
-
-        setAnswer(GeneralAnswer(answer));
-        setIsLoading(false);
-
-      })
-      .catch(() => {
-        alert("Error");
-        setAnswer(null);
-        setIsLoading(false);
-      })
-
+    gptAnswer = await fetchGeneralAnswer(question, (data: General) => {
+      setAnswer(<GeneralAnswer
+        answer={data.answer}
+        sources={data.sources}
+        listBest={data.listBest}
+      />);
+      setIsLoading(false);
+    }, () => {
+      setAnswer(null);
+      setIsLoading(false);
+    });
   }
 
   return (
