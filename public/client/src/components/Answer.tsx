@@ -58,7 +58,6 @@ export function GeneralAnswer(answer: General) {
                     </ul>
                 </Panel>
             </Collapse>
-
         </Card>
     );
 }
@@ -82,7 +81,6 @@ export function ContextAnswer(answer: Context) {
                     </ol>
                 </Panel>
             </Collapse>
-
         </Card>
     );
 }
