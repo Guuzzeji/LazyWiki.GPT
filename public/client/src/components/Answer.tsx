@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Collapse } from 'antd';
-
+import ReactMarkdown from 'react-markdown'
 
 export interface General {
     answer: string
@@ -35,7 +35,7 @@ export function GeneralAnswer(answer: General) {
 
     return (
         <Card style={{ maxWidth: "100%", minWidth: "300px", width: "30vw" }}>
-            <p>{answer.answer}</p>
+            <p><ReactMarkdown children={answer.answer} /></p>
 
             <div style={{ marginTop: "25px" }}></div>
 
@@ -70,7 +70,7 @@ export function ContextAnswer(answer: Context) {
 
     return (
         <Card style={{ maxWidth: "100%", minWidth: "300px", width: "30vw" }}>
-            <p>{answer.answer}</p>
+            <p><ReactMarkdown children={answer.answer} /></p>
 
             <div style={{ marginTop: "25px" }}></div>
 
