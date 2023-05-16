@@ -18,7 +18,6 @@ app.use("/API", api);
 app.use(express.static(path.join(process.cwd(), "public/client/", "build")));
 app.use(express.static("public"));
 app.use((req, res, next) => {
-    console.log(path.join(process.cwd(), "public/client/build", "index.html"));
     res.sendFile(path.join(process.cwd(), "public/client/build", "index.html"));
 });
 

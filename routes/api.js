@@ -18,7 +18,6 @@ router.post('/answer/general', requestLimter, async (req, res) => {
         res.status(500).send({ error: "bad body" });
     }
 
-
     let jsonReq = req.body;
     let prompt = await createGeneralQS(jsonReq.question);
     let openAIRes = await GPT(prompt);
