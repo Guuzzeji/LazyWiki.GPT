@@ -16,7 +16,7 @@ export interface Context {
 function SourceItem(url: string) {
     return (
         <li>
-            <a href={url}>url</a>
+            <a href={url}>{url}</a>
         </li>
     )
 }
