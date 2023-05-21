@@ -22,7 +22,6 @@ export async function fetchGeneralAnswer(question: string, callbackSuccess: Func
             return answer;
         })
         .catch((error) => {
-            alert("Error");
             console.log(error)
             callbackFailure()
             return null;
