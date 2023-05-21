@@ -13,31 +13,33 @@ router.use(bodyParser.json());
 
 import { cleanGPTResponse, cleanWikiURL } from "./utils.js";
 
-router.post('/answer/general', requestLimter, async (req, res) => {
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+router.post('/answer/context', requestLimter, async (req, res) => {
     if (req.body == null || req.body.question == null || req.body.question == undefined) {
         res.status(500).send({ error: "bad body" });
     }
 
     let jsonReq = req.body;
     let prompt = await createGeneralQS(jsonReq.question);
-    let openAIRes = await GPT(prompt);
+    let searhQuery = await GPT(prompt.searhQueryPrompt);
+    console.log(searhQuery.data.choices[0].message.content);
+    let promptSearch = await prompt.genPrompt(searhQuery.data.choices[0].message.content);
+    let openAIRes = await GPT(promptSearch);
 
-    // console.log(prompt);
-    // console.log(openAIRes.data);
+    console.log(promptSearch);
+    console.log(openAIRes.data.choices[0].message.content);
 
     // Try to parse json from gpt
-    res.send(cleanGPTResponse(openAIRes.data.choices[0].message.content));
-});
+    let topWikiPages = cleanGPTResponse(openAIRes.data.choices[0].message.content);
 
-router.post('/answer/context', requestLimter, async (req, res) => {
-    let jsonReq = req.body;
-
+    console.log(topWikiPages);
     let pages = [];
-    for (let i = 0; i < jsonReq.wikiURLS.length; i++) {
-        pages.push(await getWikiPage(cleanWikiURL(jsonReq.wikiURLS[i])));
+    for (let i = 0; i < topWikiPages.wikiURLS.length; i++) {
+        pages.push(await getWikiPage(cleanWikiURL(topWikiPages.wikiURLS[i])));
     }
-
-    // console.log(pages);
 
     let subTitles = [];
     for (let i = 0; i < pages.length; i++) {
@@ -46,7 +48,11 @@ router.post('/answer/context', requestLimter, async (req, res) => {
         }
     }
 
-    // console.log(subTitles);
+    console.log(subTitles);
+
+    console.log(pages);
+
+    await sleep(1000 * 60);
 
     let searchPrompt = await createSearchWikiQS(jsonReq.question, subTitles);
     let gptSearchSelect = await GPT(searchPrompt);
