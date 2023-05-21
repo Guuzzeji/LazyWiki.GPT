@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Input, Space } from 'antd';
+import { Button, Input, Space, Alert } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 import 'antd/dist/reset.css';
@@ -12,31 +12,32 @@ const { TextArea } = Input;
 
 function App() {
   const [question, setQuestion] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<number>(1); // 0 = loading, 1 = success, -1 = failed
   const [answer, setAnswer] = useState<any | null>(null);
   let gptAnswer: General | null = null;
 
-  async function getGeneralAnswer() {
+  async function getGeneralAnswer(): Promise<void> {
     setAnswer(null);
-    setIsLoading(true);
+    setIsLoading(0);
 
     if (question == "" || question == null) {
-      setIsLoading(false);
-      alert("Please enter a question")
+      setIsLoading(-1);
       return;
     }
 
-    gptAnswer = await fetchGeneralAnswer(question, (data: General) => {
-      setAnswer(<GeneralAnswer
-        answer={data.answer}
-        sources={data.sources}
-        listBest={data.listBest}
-      />);
-      setIsLoading(false);
-    }, () => {
+    gptAnswer = await fetchGeneralAnswer(question, () => { null }, () => { null });
+
+    if (gptAnswer == null) {
       setAnswer(null);
-      setIsLoading(false);
-    });
+      setIsLoading(-1);
+    } else {
+      setAnswer(<GeneralAnswer
+        answer={gptAnswer.answer}
+        sources={gptAnswer.sources}
+        listBest={gptAnswer.listBest}
+      />);
+      setIsLoading(1);
+    }
   }
 
   return (
@@ -48,7 +49,7 @@ function App() {
             <h1>LazyWiki.Q&A</h1>
           </center>
 
-          {isLoading ? (
+          {isLoading == 0 ? (
             <TextArea
               value={question}
               className="searchBar"
@@ -70,7 +71,7 @@ function App() {
           <div style={{ marginTop: "25px" }}></div>
 
           <center>
-            {isLoading ? (
+            {isLoading == 0 ? (
               <Space direction="horizontal">
                 <Button type="dashed" icon={<SearchOutlined />} loading disabled>Get Answer</Button>
               </Space>
@@ -83,7 +84,11 @@ function App() {
 
           <div style={{ marginTop: "25px" }}></div>
 
-          {answer}
+          {answer != null || isLoading == 1 || isLoading == 0 ? (
+            answer
+          ) : (
+            <Alert message="Error: Something bad happen" type="error" />
+          )}
 
         </div>
       </div>
