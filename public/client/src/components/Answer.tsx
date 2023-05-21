@@ -22,14 +22,14 @@ function SourceItem(url: string) {
 }
 
 const { Panel } = Collapse;
-export function GeneralAnswer(answer: General) {
+export function GeneralAnswer(answer: General, onContextBtn: any | null = null) {
     let sources = [];
-    for (let i = 0; i < answer.sources.length; i++) {
+    for (let i = 0; answer.sources != null && i < answer.sources.length; i++) {
         sources.push(SourceItem(answer.sources[i]))
     }
 
     let bestSources = [];
-    for (let i = 0; i < answer.listBest.length; i++) {
+    for (let i = 0; answer.listBest != null && i < answer.listBest.length; i++) {
         bestSources.push(SourceItem(answer.listBest[i]))
     }
 
@@ -40,7 +40,7 @@ export function GeneralAnswer(answer: General) {
             <div style={{ marginTop: "25px" }}></div>
 
             <center>
-                <Button type="dashed">Deep Context Answer</Button>
+                <Button onClick={onContextBtn} type="dashed">Deep Context Answer</Button>
             </center>
 
             <div style={{ marginTop: "25px" }}></div>
