@@ -40,6 +40,7 @@ async function getWikiPage(pageTitle) {
         }
     }
 
+    let mapSections = new Map();
     for (let i = 0; i < sections.length; i++) {
         let chunks = chunkText({
             text: htmlToText(sections[i].text),
@@ -47,11 +48,13 @@ async function getWikiPage(pageTitle) {
             overlap: 100
         });
         sections[i]["tokenText"] = chunks;
+
+        mapSections.set(sections[i].line, { text: sections[i].text, tokenText: sections[i].tokenText });
     }
 
     return {
         title: pageData.lead.normalizedtitle,
-        sections
+        mapSections
     };
 };
 
