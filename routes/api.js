@@ -11,11 +11,7 @@ import requestLimter from './request-limiter.js';
 const router = express.Router();
 router.use(bodyParser.json());
 
-import { cleanGPTResponse, cleanWikiURL } from "./utils.js";
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+import { cleanGPTResponse, cleanWikiURL, sleep } from "./utils.js";
 
 router.post('/answer/context', requestLimter, async (req, res) => {
     if (req.body == null || req.body.question == null || req.body.question == undefined) {

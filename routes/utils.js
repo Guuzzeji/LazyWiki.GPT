@@ -12,3 +12,7 @@ export function cleanWikiURL(URL) {
         .replace("https://en.wikipedia.org//wiki/", "")
         .trim();
 }
+
+export function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
