@@ -5,18 +5,18 @@ import searchWiki from "../../fetch/wikisearch.js";
 
 //! Answer general user question
 const answer = StructuredOutputParser.fromNamesAndDescriptions({
-    wikiURLS: ["This should be a JS array. If website list above is empty leave this array empty. Don't put quotes around this. Select websites out of the list given to you that can futher answer the user's question. Select 1 to 4 websites and place them here."]
+    wikiURLS: ["This should be a JS array. If you cannot answer using the websites given to you or no websites were given to you, leave this blank. Don't put quotes around this. Select websites out of the list given to you that can futher answer the user's question. Select 1 to 4 websites and place them here. DO NOT USE WEBSITES THAT WERE NOT GIVEN TO YOU! ONLY SELECT WEBSITES THAT WERE NOT GIVEN TO YOU!"]
 });
 
 const prompt = new PromptTemplate({
-    template: `\nUser question:{question} \nWebsites:{websites}\n Only used websites that are given to you in the list above. AI GPT select the top 5 websites out of the list of websites above that can answer the user's question. Do not explain anything. Use the most useful websites provided and write answers in JSON format. {format_instructions}`,
+    template: `AI GPT select the top 5 websites out of the list of websites given to you that can answer the user's question. Do not explain anything. DO NOT SELECT WEBSITES THAT WERE NOT GIVEN TO YOU! ONLY SELECT WEBSITES THAT WERE NOT GIVEN TO YOU!\nUser question: {question} \nWebsites: {websites}\n {format_instructions}`,
     inputVariables: ["question", "websites"],
     partialVariables: { format_instructions: answer.getFormatInstructions() },
 });
 
 export async function createGeneralQS(question) {
     return {
-        topicQueryPrompt: `Find the main key topic within this question that can be used to search for a related Wikipedia article. Only write the topic, nothing else. Question: ${question}`,
+        topicQueryPrompt: `Find the main key topic within this question that can be used to search for a related Wikipedia article. Only write the topic, nothing else. Answer should be one word or 5 words at max. Question: ${question}`,
         genWikiSearchPrompt: async function (searhQuery) {
             let links = await searchWiki(searhQuery);
             return await prompt.format({
