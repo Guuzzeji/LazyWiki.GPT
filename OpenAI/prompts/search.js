@@ -16,8 +16,8 @@ const prompt = new PromptTemplate({
 
 export async function createGeneralQS(question) {
     return {
-        searhQueryPrompt: `Find the main key topic within this question that can be used to search for a related Wikipedia article. Only write the topic, nothing else. Question: ${question}`,
-        genPrompt: async function (searhQuery) {
+        topicQueryPrompt: `Find the main key topic within this question that can be used to search for a related Wikipedia article. Only write the topic, nothing else. Question: ${question}`,
+        genWikiSearchPrompt: async function (searhQuery) {
             let links = await searchWiki(searhQuery);
             return await prompt.format({
                 question: question,

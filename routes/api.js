@@ -1,17 +1,18 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+const router = express.Router();
+router.use(bodyParser.json());
 
 import { createGeneralQS, createContextQS, createSearchWikiQS } from '../OpenAI/prompts/index.js';
 import { createTextEmbedding, searchEmbedding } from '../OpenAI/embedding.js';
 import GPT from '../OpenAI/gpt.js';
 
 import { getWikiPage } from '../fetch/wikipage.js';
+
 import requestLimter from './request-limiter.js';
-
-const router = express.Router();
-router.use(bodyParser.json());
-
 import { cleanGPTResponse, cleanWikiURL, sleep } from "./utils.js";
+
+
 
 router.post('/answer/context', requestLimter, async (req, res) => {
     if (req.body == null || req.body.question == null || req.body.question == undefined) {
@@ -19,67 +20,75 @@ router.post('/answer/context', requestLimter, async (req, res) => {
     }
 
     let jsonReq = req.body;
-    let prompt = await createGeneralQS(jsonReq.question);
-    let searhQuery = await GPT(prompt.searhQueryPrompt);
-    console.log(searhQuery.data.choices[0].message.content);
-    let promptSearch = await prompt.genPrompt(searhQuery.data.choices[0].message.content);
-    let openAIRes = await GPT(promptSearch);
+    let userPrompt = await createGeneralQS(jsonReq.question);
+
+    // ! Converting question to search quary
+    let searhQuery = await GPT(userPrompt.topicQueryPrompt);
+    searhQuery = searhQuery.data.choices[0].message.content;
+    let promptSearch = await userPrompt.genWikiSearchPrompt(searhQuery);
+
+    console.log(searhQuery);
+
+    // ! Making GPT pick the top wiki pages from search engine
+    let topWikiPagesFromGPT = await GPT(promptSearch);
+    topWikiPagesFromGPT = cleanGPTResponse(topWikiPagesFromGPT.data.choices[0].message.content);
 
     console.log(promptSearch);
-    console.log(openAIRes.data.choices[0].message.content);
+    console.log(topWikiPagesFromGPT);
 
-    // Try to parse json from gpt
-    let topWikiPages = cleanGPTResponse(openAIRes.data.choices[0].message.content);
-
-    console.log(topWikiPages);
-    let pages = [];
-    for (let i = 0; i < topWikiPages.wikiURLS.length; i++) {
-        pages.push(await getWikiPage(cleanWikiURL(topWikiPages.wikiURLS[i])));
-    }
-
+    let wikiPages = new Map();
     let subTitles = [];
-    for (let i = 0; i < pages.length; i++) {
-        for (let j = 0; j < pages[i].sections.length; j++) {
-            subTitles.push(pages[i].sections[j].line);
-        }
+    for (let i = 0; i < topWikiPagesFromGPT.wikiURLS.length; i++) {
+        let page = await getWikiPage(cleanWikiURL(topWikiPagesFromGPT.wikiURLS[i]));
+        wikiPages.set(page.title, page);
+
+        page.mapSections.forEach(function (value, key, map) {
+            subTitles.push(key);
+        });
     }
 
+    console.log(wikiPages);
     console.log(subTitles);
 
-    console.log(pages);
+    await sleep(1000 * 60); // * Have to sleep in order to not go over OpenAI rate limt (it 3 request a minute)
 
-    await sleep(1000 * 60);
-
+    // ! Have GPT pick the best subtitle from all Wiki-pages it picked it the first section
     let searchPrompt = await createSearchWikiQS(jsonReq.question, subTitles);
-    let gptSearchSelect = await GPT(searchPrompt);
+    let searchSeclectionFromGPT = await GPT(searchPrompt);
+    searchSeclectionFromGPT = cleanGPTResponse(searchSeclectionFromGPT.data.choices[0].message.content).answers;
 
-    let topSearchSections = cleanGPTResponse(gptSearchSelect.data.choices[0].message.content);
-
-    // console.log(topSearchSections);
-
+    // ! Getting most revelent text that will likely answer user question
     let revelentText = [];
-    for (let i = 0; i < pages.length; i++) {
-        for (let title in topSearchSections.answers) {
-            for (let j = 0; j < pages[i].sections.length; j++) {
-                if (pages[i].sections[j].line == topSearchSections.answers[title]) {
-                    let emebeding = await createTextEmbedding(pages[i].sections[j].tokenText);
-                    let wikiText = await searchEmbedding(jsonReq.question, emebeding);
-                    revelentText.push(pages[i].sections[j].tokenText[wikiText.index]);
-                }
+    let iter = wikiPages.entries();
+    for (let page of iter) {
+        for (let title in searchSeclectionFromGPT) {
+            let text = page[1].mapSections.get(searchSeclectionFromGPT[title]);
+            if (text != undefined) {
+                let emebeding = await createTextEmbedding(text.tokenText);
+                let lookup = await searchEmbedding(jsonReq.question, emebeding);
+                revelentText.push({
+                    text: text.tokenText[lookup.index],
+                    wikiTitle: page[0],
+                    wikiSubTitle: searchSeclectionFromGPT[title]
+                });
             }
         }
     }
 
-    // console.log(revelentText);
+    console.log(revelentText);
 
     let contextPrompt = await createContextQS(jsonReq.question, revelentText.toString());
-    let answerQS = await GPT(contextPrompt);
+    let answerQSFromGPT = await GPT(contextPrompt);
+    answerQSFromGPT = cleanGPTResponse(answerQSFromGPT.data.choices[0].message.content).answers;
 
-    // console.log(prompt);
-    // console.log(answerQS.data);
+    console.log(contextPrompt);
+    console.log(answerQSFromGPT);
 
     // Try to parse json from gpt
-    res.send(cleanGPTResponse(answerQS.data.choices[0].message.content));
+    res.send({
+        answer: answerQSFromGPT,
+        revelentText
+    });
 });
 
 export { router };
