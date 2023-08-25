@@ -15,10 +15,10 @@ app.use("/API", api);
 // Used for react client
 // from: https://levelup.gitconnected.com/how-to-render-react-app-using-express-server-in-node-js-a428ec4dfe2b
 // also helpful: https://stackoverflow.com/questions/40262513/how-to-disable-suppress-errors-from-libraries-in-typescript
-app.use(express.static(path.join(process.cwd(), "public/client/", "build")));
-app.use(express.static("public"));
+app.use(express.static(path.join(process.cwd(), "client/", "build")));
+app.use(express.static("client"));
 app.use((req, res, next) => {
-    res.sendFile(path.join(process.cwd(), "public/client/build", "index.html"));
+    res.sendFile(path.join(process.cwd(), "client/build", "index.html"));
 });
 
 app.listen(port, () => {
