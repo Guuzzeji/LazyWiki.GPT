@@ -1,5 +1,5 @@
 # WikiGPT
-GPT chatbot that powers it answers using wikipedia 
+GPT chatbot that powers it answers using wikipedia, call project LazyWikiSearch || LazyWiki.Q&A
 
 Inspired by https://github.com/shbhrsaha/wikipedia-gpt3-bot
 
