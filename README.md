@@ -1,34 +1,17 @@
-# WikiGPT
-GPT chatbot that powers it answers using wikipedia, call project LazyWikiSearch || LazyWiki.Q&A
+# LazyWiki.Q&A
+> Note: This project was developed prior to certain OpenAI API modifications. Some sections of the project need to be updated in order to incorporate these changes.
+
+---
 
 Inspired by https://github.com/shbhrsaha/wikipedia-gpt3-bot
 
-## Keep in mind (Cheaper than OpenAI)
-- https://studio.ai21.com/overview
-- https://docs.cohere.com/docs/the-cohere-platform
-- https://www.youtube.com/watch?v=1aequYq5yTo
+Introducing "LazyWiki.Q&A" – Unleash the Power of OpenAI GPT Chatbot with Wikipedia Integration!
 
-## Todo
-- [ ] Use cohere.ai to summary sections from wiki pages and then have them be resend back to gpt to futher answer people questions
-- [ ] Create a UI that is similar to wikipedia
-- [ ] Update api to use both get and post request
+Tired of endless searches for accurate information? Welcome to LazyWiki.Q&A, your ultimate solution for swift and precise answers. Harnessing the prowess of OpenAI's GPT chatbot and seamlessly integrating it with Wikipedia, LazyWiki.Q&A revolutionizes your information quest.
 
-### Note
+With LazyWiki.Q&A, complex queries turn effortless. Curious minds and students can now delve into the wealth of knowledge that Wikipedia holds, instantly tapping into its vast database through conversational interactions. The project marries the conversational prowess of GPT with Wikipedia's extensive information, presenting a dynamic duo that's a game-changer for research, problem-solving, and exploration.
 
-UI Design a mix of wikipedia ui, openai, and komo.ai
-- https://fonts.google.com/specimen/Playfair+Display?category=Serif,Sans+Serif,Monospace
-- https://www.npmjs.com/package/react-markdown
-- https://www.freecodecamp.org/news/animate-react-apps/
-- https://picocss.com/
-- https://dribbble.com/tags/app%20inspiration
-- https://fonts.google.com/specimen/Inter?category=Serif,Sans+Serif,Monospace
-- Power this using react.js
+> Just a quick note: I was pretty tired and thought it would be fun to see if ChatGPT could come up with a description for this project.
 
-Don't use duckduckgo, use wiki search instead
-- https://www.lifewire.com/wikipedia-search-4685975
-- https://en.wikipedia.org/w/index.php?search=cherry&title=Special:Search&profile=advanced&fulltext=1&ns0=1
-
-
-Can design this to be more inline with WebGPT using vm node
-- https://medium.com/@devnullnor/a-secure-node-sandbox-f23b9fc9f2b0
-- https://nodejs.org/api/vm.html
+## Example of Frontend
+![]("./../assets/screenshot.png)
