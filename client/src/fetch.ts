@@ -1,7 +1,7 @@
-import { General, Context } from './components/Answer'
+import { GPTAnswer } from './components/Answer'
 
-export async function fetchGeneralAnswer(question: string, callbackSuccess: Function, callbackFailure: Function): Promise<General | null> {
-    return await fetch("API/answer/general", {
+export async function fetchAnswerFromAPI(question: string, callbackSuccess: Function, callbackFailure: Function): Promise<GPTAnswer | null> {
+    return await fetch("API/answer/context", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -12,13 +12,8 @@ export async function fetchGeneralAnswer(question: string, callbackSuccess: Func
     })
         .then(response => { return response.json() })
         .then(function (data) {
-            let answer: General = {
-                answer: data.answers,
-                sources: data.sources,
-                listBest: data.listBest
-            }
-
-            callbackSuccess(answer)
+            let answer: GPTAnswer = { ...data }
+            callbackSuccess()
             return answer;
         })
         .catch((error) => {

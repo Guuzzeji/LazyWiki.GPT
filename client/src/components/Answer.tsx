@@ -2,36 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Collapse } from 'antd';
 import ReactMarkdown from 'react-markdown'
 
-export interface General {
+export interface GPTAnswer {
     answer: string
-    sources: string[]
-    listBest: string[]
+    textUsed: RevelentText[]
 }
 
-export interface Context {
-    answer: string
-    sources: string[]
+interface RevelentText {
+    text: string,
+    title: string,
+    subtitle: string
 }
 
-function SourceItem(url: string) {
+function TextItem(text: RevelentText) {
     return (
         <li>
-            <a href={url}>{url}</a>
+            <span><b>Wiki Ttile:</b> {text.title}</span>
+            <br />
+            <span><b>Sub Title:</b> {text.subtitle}</span>
+            <br />
+            <span><b>Text:</b> {text.text}</span>
         </li>
     )
 }
 
 const { Panel } = Collapse;
-export function GeneralAnswer(answer: General, onContextBtn: any | null = null) {
-    let sources = [];
-    for (let i = 0; answer.sources != null && i < answer.sources.length; i++) {
-        sources.push(SourceItem(answer.sources[i]))
-    }
-
-    let bestSources = [];
-    for (let i = 0; answer.listBest != null && i < answer.listBest.length; i++) {
-        bestSources.push(SourceItem(answer.listBest[i]))
-    }
+export function AnswerPanel(answer: GPTAnswer) {
 
     return (
         <Card style={{ maxWidth: "100%", minWidth: "300px", width: "30vw" }}>
@@ -39,46 +34,17 @@ export function GeneralAnswer(answer: General, onContextBtn: any | null = null) 
 
             <div style={{ marginTop: "25px" }}></div>
 
-            <center>
-                <Button onClick={onContextBtn} type="dashed">Deep Context Answer</Button>
-            </center>
-
-            <div style={{ marginTop: "25px" }}></div>
-
             <Collapse>
                 <Panel header="Sources" key="1">
-                    <ol style={{ overflowWrap: "anywhere" }}>
-                        {sources}
-                    </ol>
-                </Panel>
-
-                <Panel header="Get More Answers" key="2">
                     <ul style={{ overflowWrap: "anywhere" }}>
-                        {bestSources}
+                        {answer.textUsed.map((item, index) =>
+                            <TextItem
+                                text={item.text}
+                                title={item.title}
+                                subtitle={item.subtitle}
+                            />
+                        )}
                     </ul>
-                </Panel>
-            </Collapse>
-        </Card>
-    );
-}
-
-export function ContextAnswer(answer: Context) {
-    let sources = [];
-    for (let i = 0; i < answer.sources.length; i++) {
-        sources.push(SourceItem(answer.sources[i]))
-    }
-
-    return (
-        <Card style={{ maxWidth: "100%", minWidth: "300px", width: "30vw" }}>
-            <p><ReactMarkdown children={answer.answer} /></p>
-
-            <div style={{ marginTop: "25px" }}></div>
-
-            <Collapse>
-                <Panel header="Sources" key="1">
-                    <ol style={{ overflowWrap: "anywhere" }}>
-                        {sources}
-                    </ol>
                 </Panel>
             </Collapse>
         </Card>
