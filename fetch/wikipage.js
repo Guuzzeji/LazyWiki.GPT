@@ -7,6 +7,7 @@ import { JSDOM } from 'jsdom';
 
 import { chunkText } from '../OpenAI/token.js';
 
+// Useless text that isn't helpful
 const BLACKLIST_TITLES = ["See also", "Notes", "References", "Bibliography", "Further reading", "External links"];
 
 async function getWikiPage(pageTitle) {
@@ -20,6 +21,8 @@ async function getWikiPage(pageTitle) {
         });
 
     let sections = pageData.remaining.sections;
+
+    // Making the summary of wikipage it own section
     sections.unshift({
         id: 0,
         line: "Overview",
@@ -27,19 +30,17 @@ async function getWikiPage(pageTitle) {
         text: pageData.lead.sections[0].text,
     });
 
-    // Remove uneeded sections
+    // Remove uneeded sections and anything that has a small amount of text
     for (let i = 0; i < sections.length; i++) {
         for (let title of BLACKLIST_TITLES) {
-            if (sections[i] != null && sections[i].line == title) {
+            if ((sections[i] != null && sections[i].line == title)
+                || (sections[i] != undefined && sections[i].text.length < 250)) {
                 sections.splice(i, 1);
             }
         }
-
-        if (sections[i] != undefined && sections[i].text.length < 250) {
-            sections.splice(i, 1);
-        }
     }
 
+    // Converting array into HashMap for better lookup times
     let mapSections = new Map();
     for (let i = 0; i < sections.length; i++) {
         let chunks = chunkText({
@@ -58,6 +59,7 @@ async function getWikiPage(pageTitle) {
     };
 };
 
+// Used to convert html tags giving us the raw text of the page
 function htmlToText(html) {
     let fullText = "";
 

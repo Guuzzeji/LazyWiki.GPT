@@ -1,6 +1,7 @@
 import { encoding_for_model } from "@dqbd/tiktoken";
 
 // base on https://blog.devgenius.io/how-to-get-around-openai-gpt-3-token-limits-b11583691b32
+// Used to chunk text base on token size / limt of a model
 function chunkText({ modelType = "gpt-3.5-turbo", text, chunkSize, overlap }) {
     const model = encoding_for_model(modelType);
     let tokens = model.encode(text);
@@ -23,6 +24,7 @@ function chunkText({ modelType = "gpt-3.5-turbo", text, chunkSize, overlap }) {
     return result;
 };
 
+// Checking to see if prompt is not hiting max token size
 function checkTextSize({ modelType = "gpt-3.5-turbo", text, tokenLength }) {
     const model = encoding_for_model(modelType);
     let tokens = model.encode(text);

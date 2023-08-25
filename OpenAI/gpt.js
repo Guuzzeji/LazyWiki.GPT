@@ -11,7 +11,6 @@ const openai = new OpenAIApi(configuration);
 
 // Look at https://github.com/openai/openai-node/issues/107
 export default async function (promptStr) {
-
     const completion = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: promptStr }],

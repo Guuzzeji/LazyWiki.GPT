@@ -1,4 +1,5 @@
 // From: https://geeklad.com/remove-stop-words-in-javascript
+// * Used to create better search qurey that can be used by Wiki search engine
 
 const stopWords = [
     'a',
