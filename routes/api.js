@@ -3,11 +3,11 @@ import bodyParser from 'body-parser';
 const router = express.Router();
 router.use(bodyParser.json());
 
-import { createGeneralQS, createContextQS, createSearchWikiQS } from '../OpenAI/prompts/index.js';
-import { createTextEmbedding, searchEmbedding } from '../OpenAI/embedding.js';
-import GPT from '../OpenAI/gpt.js';
+import { createGeneralQS, createContextQS, createSearchWikiQS } from '../openai/prompts/index.js';
+import { createTextEmbedding, searchEmbedding } from '../openai/embedding.js';
+import GPT from '../openai/gpt.js';
 
-import { getWikiPage } from '../fetch/wikipage.js';
+import { getWikiPage } from '../wiki-fetch/wikipage.js';
 
 import requestLimter from './request-limiter.js';
 import { cleanGPTResponse, cleanWikiURL, sleep } from "./utils.js";
