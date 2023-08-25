@@ -3,7 +3,7 @@ import { StructuredOutputParser } from "langchain/output_parsers";
 
 //! Answer user question with more context
 const answer = StructuredOutputParser.fromNamesAndDescriptions({
-    answers: `Your answer to the user question. Your answer should be between 200 to 750 words. If you cannot answer the user questions write "I don't know" and explain why you cannot answer the question.`,
+    answers: `Your answer to the user question. Your answer should be between 200 to 750 words. If you cannot answer the user questions write "I don't know" and explain why you cannot answer the question. BUT YOU SHOULD ALWAYS TRY TO ANSWER THE USER'S QUESTION NO MATTER WHAT.`,
 });
 
 const prompt = new PromptTemplate({

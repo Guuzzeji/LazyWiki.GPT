@@ -5,8 +5,8 @@ import { SearchOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
 import './App.css';
 
-import { ContextAnswer, GeneralAnswer, General } from './components/Answer';
-import { fetchGeneralAnswer } from './fetch';
+import { AnswerPanel, GPTAnswer } from './components/Answer';
+import { fetchAnswerFromAPI } from './fetch';
 
 const { TextArea } = Input;
 
@@ -14,7 +14,7 @@ function App() {
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState<number>(1); // 0 = loading, 1 = success, -1 = failed
   const [answer, setAnswer] = useState<any | null>(null);
-  let gptAnswer: General | null = null;
+  let gptAnswer: GPTAnswer | null = null;
 
   async function getGeneralAnswer(): Promise<void> {
     setAnswer(null);
@@ -25,16 +25,15 @@ function App() {
       return;
     }
 
-    gptAnswer = await fetchGeneralAnswer(question, () => { null }, () => { null });
+    gptAnswer = await fetchAnswerFromAPI(question, () => { null }, () => { null });
 
     if (gptAnswer == null) {
       setAnswer(null);
       setIsLoading(-1);
     } else {
-      setAnswer(<GeneralAnswer
+      setAnswer(<AnswerPanel
         answer={gptAnswer.answer}
-        sources={gptAnswer.sources}
-        listBest={gptAnswer.listBest}
+        textUsed={gptAnswer.textUsed}
       />);
       setIsLoading(1);
     }
@@ -73,11 +72,11 @@ function App() {
           <center>
             {isLoading == 0 ? (
               <Space direction="horizontal">
-                <Button type="dashed" icon={<SearchOutlined />} loading disabled>Get Answer</Button>
+                <Button type="dashed" icon={<SearchOutlined />} loading disabled>Search</Button>
               </Space>
             ) : (
               <Space direction="horizontal">
-                <Button type="dashed" icon={<SearchOutlined />} onClick={getGeneralAnswer}>Get Answer</Button>
+                <Button type="dashed" icon={<SearchOutlined />} onClick={getGeneralAnswer}>Search</Button>
               </Space>
             )}
           </center>

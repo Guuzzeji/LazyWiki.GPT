@@ -32,8 +32,7 @@ async function searchEmbedding(search, embedding) {
     });
 
     let searchQuery = result.data.data[0].embedding;
-
-    let maxPercent = { index: 0, similarity: 0, };
+    let maxPercent = { index: 0, similarity: 0, }; // Used to keep track of best embedding result
 
     for (let y = 0; y < embedding.length; y++) {
         let similarity = cosineSimilarity(embedding[y], searchQuery);
